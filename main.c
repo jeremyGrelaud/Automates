@@ -16,7 +16,7 @@ int main()
 
     FILE* fichier = NULL;
     fichier = fopen(path, "r");
-    rewind(fichier); // pour s'assurer que le fichier est bien au début
+    rewind(fichier); // pour s'assurer que le fichier est bien au dï¿½but
 
     automate_t * monAutomate = NULL;
     monAutomate = lire_automate_fichier(fichier);

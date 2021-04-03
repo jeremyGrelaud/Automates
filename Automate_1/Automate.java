@@ -80,7 +80,7 @@ public class Automate {
 
 	
 	public Etat getEtatByNom(String id) { //on veut recup un etat specifique de l automate avec son id
-		//on parcours la liste jusqu'� trouver l'etat correpsondant
+		//on parcours la liste jusqu'� trouver l'etat correspondant
 		if(this.containsEtats(id)) {
 			for(int i=0;i<this.getEtats().size();i++) {
 				if(etats.get(i).getNom().equals(id)) {
@@ -234,7 +234,7 @@ public class Automate {
 			
 			//suppr le type ENTRY des anciennes
 			for(Etat etat : etats_entree) {
-				etat.getTypes().get(i)
+				etat.getTypes().get(i);
 			}
 			
 			

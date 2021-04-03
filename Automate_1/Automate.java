@@ -180,6 +180,7 @@ public class Automate {
 
 	}
 	
+	/*** STANDARDISATION*/
 	public boolean est_standard(Automate automate) { //il faut une seule entrée et aucune transi vers cette entrée
 		int compteur = 0;
 		Etat new_etat = null;
@@ -262,6 +263,113 @@ public class Automate {
 		} 
 		return liste;
 	}
+	
+	
+	/*** DETERMINISATION*/
+	public boolean est_un_automate_asynchrone(Automate automate) {
+		int compteur=0;
+		String epsilon = "*";
+		
+		for(Etat etat : this.etats) {
+			for(String clef : etat.getTransi().keySet()) { //string avec tt les clefs
+				
+				if(clef == "") {
+					System.out.println("\nL'automate est asynchrone car :\n"); //va être affiché plusieurs fois
+					System.out.println(etat.getNom() +" - "+ epsilon+" - "+etat.getTransi().get(clef).toString());
+					compteur++;
+					
+				}
+			} 
+		}
+		if(compteur>0) {
+			return true;
+		}
+		else {
+			System.out.println("L'automate n'est pas asynchrone");
+			return false;
+		}
+		
+	}
+	
+	public boolean est_un_automate_deterministe(Automate automate) { //1 seule entrée et liste pour une clef = taille 1 pas plus
+		
+		int compteur_entrée = 0;
+		for(int i=0; i<automate.etats.size();i++) {
+			if(automate.getEtats().get(i).getTypes().contains(TypeEtat.ENTRY)) {
+				compteur_entrée++;
+			}
+		} 
+		
+		if(compteur_entrée>1) {
+			System.out.println("\nNon déterministe car plus d'une entrée");
+			return false;
+		}
+		
+		for(Etat etat : this.etats) {
+			for(String clef : etat.getTransi().keySet()) { //string avec tt les clefs
+				if(etat.getTransi().get(clef).size()>1) {
+					System.out.println("\nNon déterministe car on a la transi : "+etat.getNom()+"-"+clef+"-"+etat.getTransi().get(clef).toString());
+					return false;
+				}
+			} 
+		}
+		System.out.println("\nAutomate déterministe");
+		return true;
+	}
+	
+	public boolean est_un_automate_complet(Automate automate) {
+		if((automate.est_un_automate_asynchrone(automate)==false) && (automate.est_un_automate_deterministe(automate)==true)) {
+			//check si chaque etat possède le bon nbr de clefs
+			int compteur=0;
+			for(Etat etat : this.etats) {
+				for(String clef : etat.getTransi().keySet()) { 
+						compteur++;
+					}
+					if(compteur!=automate.getAlphabet().getDictionary().size()) {
+						System.out.println("\nAutomate non complet car "+etat.getNom()+"n'a pas de transi pour toutes les lettres de l'alphabet");
+						
+						return false;
+					}
+					compteur=0;
+			}
+			
+			System.out.println("\nAutomate complet");
+			return true;
+		}
+		else {
+			System.out.println("\nVotre automate n'est pas synchrone et déterministe il ne peut pas être complet");
+			return false;
+		}
+	}
+	
+	public Automate completion(Automate automate) {
+		
+		
+		
+			//créer un etat poubelle
+			Etat p = new Etat("p");
+			List<String> liste = automate.getAlphabet().getDictionary();
+			for(int i=0; i<liste.size();i++) {
+				p.addTransi(liste.get(i), p);
+			}
+			//on rajoute le nouvel etat p à l'automate
+			automate.etats.add(p);
+				
+			//rajouter les transitions manquantes
+			for(Etat etat : this.etats) {
+				if(etat.getTransi().size()!=liste.size()) { //nous renvoie le nbr de clef pour cet etat
+					//on rajoute 
+					for(int i=0;i<liste.size();i++) {
+						if(!etat.getTransi().containsKey(liste.get(i))) { //check si la transi n'existe pas
+							etat.addTransi(liste.get(i), p);
+						}
+					}
+					
+				}
+			}
+			return automate;
+		}
+	
 	
 	/*
 	public Automate determinisation(Automate automate) {

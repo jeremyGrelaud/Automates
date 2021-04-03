@@ -7,7 +7,7 @@ public class Main {
 	
 	public static void main(String[] args) throws FileNotFoundException {
 		
-		Automate automate = FileReader.createAutomateObject("D:/Efrei/L2/java/workspace/Automate/src/Automate_1/B10-8.txt");
+		Automate automate = FileReader.createAutomateObject("C:/Users/Asus/Desktop/Maths pour l'info/Automates/Automate_1/B10-8.txt");
 		
 		automate.afficher_automate(automate);   
 		/*
@@ -20,7 +20,7 @@ public class Main {
 		List<Etat> liste = new_etat2.getTransi().get("a");
 		for(int i=0; i<liste.size();i++) {
 			System.out.println(liste.get(i).getNom());
-		}
+		}0
 		List<Etat> liste2 = new_etat2.getTransi().get("b");
 		for(int i=0; i<liste2.size();i++) {
 			System.out.println(liste2.get(i).getNom());

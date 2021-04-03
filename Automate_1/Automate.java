@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-/* modèle fichier à lire
+/* modï¿½le fichier ï¿½ lire
 2    = nbr lettres
 5    = nbr etats
 2 0 4   = nbr etats initiaux et sa liste
@@ -23,7 +23,7 @@ import java.util.List;
  */
 
 public class Automate {
-	private List<Etat> etats; /*liste des différents etats de l'automate*/
+	private List<Etat> etats; /*liste des diffï¿½rents etats de l'automate*/
 	private Alphabet alphabet; /*alphabet sous forme de liste de String*/
 	private int nbTransitions;
 	
@@ -65,7 +65,7 @@ public class Automate {
 	}
 
 	public boolean containsEtats(String la_chaine) {  //faut check les id des etats de la liste et voir si c'est dedans
-		//for(int i=0;i<etats.size() && i<getNbTransitions()  ;i++) { //ca devrait être le nbr de transis associées à cet état
+		//for(int i=0;i<etats.size() && i<getNbTransitions()  ;i++) { //ca devrait ï¿½tre le nbr de transis associï¿½es ï¿½ cet ï¿½tat
 		//	if(etats.get(i).getNom().equals(la_chaine)) {
 		//		return true;
 		//	}
@@ -80,7 +80,7 @@ public class Automate {
 
 	
 	public Etat getEtatByNom(String id) { //on veut recup un etat specifique de l automate avec son id
-		//on parcours la liste jusqu'à trouver l'etat correpsondant
+		//on parcours la liste jusqu'ï¿½ trouver l'etat correpsondant
 		if(this.containsEtats(id)) {
 			for(int i=0;i<this.getEtats().size();i++) {
 				if(etats.get(i).getNom().equals(id)) {
@@ -113,7 +113,7 @@ public class Automate {
 		System.out.println();
 		*/
 		//2*1 normalement
-		//c'est chelou les transis epsilon on pas l'air d'être accessible
+		//c'est chelou les transis epsilon on pas l'air d'ï¿½tre accessible
 		
 		
 		
@@ -180,7 +180,7 @@ public class Automate {
 
 	}
 	
-	public boolean est_standard(Automate automate) { //il faut une seule entrée et aucune transi vers cette entrée
+	public boolean est_standard(Automate automate) { //il faut une seule entrï¿½e et aucune transi vers cette entrï¿½e
 		int compteur = 0;
 		Etat new_etat = null;
 		for(Etat etat : this.etats) {
@@ -194,9 +194,9 @@ public class Automate {
 			return false;
 		}
 		else {
-			//vérifier qu'aucune transi ne mène à cet entrée
+			//vï¿½rifier qu'aucune transi ne mï¿½ne ï¿½ cet entrï¿½e
 			String id = new_etat.getNom();
-			//aucune transi ne doit avoir comme etat d'arrivée un etat.getNom() == id
+			//aucune transi ne doit avoir comme etat d'arrivï¿½e un etat.getNom() == id
 			
 			for(Etat etat : this.etats) {
 				for(String clef : etat.getTransi().keySet()) { //string avec tt les clefs
@@ -206,7 +206,7 @@ public class Automate {
 					}
 			    }
 			}
-			//à la fin de la boucle si rien a étét return alors l'automate est standard
+			//ï¿½ la fin de la boucle si rien a ï¿½tï¿½t return alors l'automate est standard
 			return true;
 		}
 	}
@@ -221,7 +221,7 @@ public class Automate {
 			//faire une fonction qui recup tous les etats de TypeEtat ENTRY
 			List<Etat> etats_entree = get_toutes_entree(automate);
 			
-			//on créer un nouvel etat d'entrée et on va copier les transitions des anciennes entrées dedans
+			//on crï¿½er un nouvel etat d'entrï¿½e et on va copier les transitions des anciennes entrï¿½es dedans
 			Etat nouvelle_entree = new Etat("i");
 			
 			for(Etat etat : etats_entree) {

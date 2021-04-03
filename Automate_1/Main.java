@@ -10,6 +10,11 @@ public class Main {
 		Automate automate = FileReader.createAutomateObject("D:/Efrei/L2/java/workspace/Automate/src/Automate_1/B10-8.txt");
 		
 		automate.afficher_automate(automate);   
+		
+		automate.standardisation(automate);
+		
+		automate.afficher_automate(automate);   
+		
 		/*
 		Etat new_etat = automate.getEtatByNom("1");
 		

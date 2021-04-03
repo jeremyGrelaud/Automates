@@ -234,19 +234,24 @@ public class Automate {
 			
 			//suppr le type ENTRY des anciennes
 			for(Etat etat : etats_entree) {
-				etat.getTypes().get(i)
+				for(int i=0;i<etat.getTypes().size();i++) {
+					if(etat.getTypes().get(i) == TypeEtat.ENTRY) {
+						etat.getTypes().remove(i);
+					}
+				}		
 			}
-			
-			
+					
 			//ajouter la nouvelle entree a l automate
+			nouvelle_entree.addType(TypeEtat.ENTRY);
 			automate.etats.add(nouvelle_entree);
+			
+			
+			return automate;
 			
 		}
 		
-		
-		
-		
 	}
+	
 	private List<Etat> get_toutes_entree(Automate automate) {
 		List<Etat> liste = new ArrayList<Etat>();
 		

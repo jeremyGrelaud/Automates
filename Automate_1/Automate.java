@@ -317,6 +317,33 @@ public class Automate {
 		return true;
 	}
 	
+	
+	/*
+	public Automate determinisation(Automate automate) {
+		Automate automate_deter_async = new Automate();
+		
+		if(est_un_automate_asynchrone(automate)) {
+			 automate_deter_async = determinisation_et_completion_asynchrone(automate);
+		}
+		else {
+			if(est_un_automate_deterministe(automate)) {
+				if(est_un_automate_complet(automate)) {
+					 automate_deter_async = new Automate(automate);
+				}
+				else {
+					 automate_deter_async = completion(automate);
+				}
+			}
+			else {
+				 automate_deter_async = determinisation_et_completion_synchrone (automate);
+			}
+		}
+		
+		afficher_automate_deterministe_complet(automate_deter_async);
+
+	}
+	*/
+	/*** COMPLETION*/
 	public boolean est_un_automate_complet(Automate automate) {
 		if((automate.est_un_automate_asynchrone(automate)==false) && (automate.est_un_automate_deterministe(automate)==true)) {
 			//check si chaque etat possède le bon nbr de clefs
@@ -344,8 +371,6 @@ public class Automate {
 	
 	public Automate completion(Automate automate) {
 		
-		
-		
 			//créer un etat poubelle
 			Etat p = new Etat("p");
 			List<String> liste = automate.getAlphabet().getDictionary();
@@ -371,31 +396,99 @@ public class Automate {
 		}
 	
 	
+	/***MINIMISATION*/
+	//doit afficher si c'était déjà minimal
+	//on minimise un automate synchrone, déterministe, complet
+	
+	/***RECONAISSANCE DES MOTS*/
 	/*
-	public Automate determinisation(Automate automate) {
-		Automate automate_deter_async = new Automate();
-		
-		if(est_un_automate_asynchrone(automate)) {
-			 automate_deter_async = determinisation_et_completion_asynchrone(automate);
+	public void lire_mot(String mot) {
+		while(mot.length()!=0) {
+			reconnaitre(mot,this);
+			lire_mot(mot);
 		}
-		else {
-			if(est_un_automate_deterministe(automate)) {
-				if(est_un_automate_complet(automate)) {
-					 automate_deter_async = new Automate(automate);
-				}
-				else {
-					 automate_deter_async = completion(automate);
-				}
-			}
-			else {
-				 automate_deter_async = determinisation_et_completion_synchrone (automate);
-			}
-		}
-		
-		afficher_automate_deterministe_complet(automate_deter_async);
-
 	}
 	*/
 	
-
+	//return true si le mot est reconnu par l'automate
+	/*
+	private boolean reconnaitre(String mot, Automate automate) {
+		for(Etat etat : this.etats) {
+			if(etat.getTypes().contains(TypeEtat.ENTRY)) {
+				//on commence à essayer de lire
+				int i=0;
+				boolean continuer = true;
+				Etat new_entry = new Etat(etat);
+				while(continuer && i<mot.length()) {
+					if(new_entry.getTransi().get(String.valueOf(mot.charAt(i)))!=null) {
+						//new_entry = new_entry.getTransi().get(String.valueOf(mot.charAt(i)));
+						//il faudrait faire une fc récursive qui appel avec tous les états terminaux de la liste
+						//puis quand ça arrive à la fin du mot faut regarder si c'est un état de sortie
+						i++;
+					}
+					else {
+						continuer = false;
+					}
+				}
+				
+			}
+		} 
+		//non reconnu
+		return false; 
+	}
+	*/
+	
+	
+	/***LANGAGE COMPLEMENTAIRE*/
+	/*
+	public void construction_complementaire_reconaissance(Automate automate) {
+		Automate automate_complementaire = automate.automate_complementaire(automate);
+		automate_complementaire.afficher_automate(automate_complementaire);
+		//
+		//
+		//lecture
+		//
+		//	
+	}
+	*/
+	
+	//il faudrait indiquer à partir de quel type d'automate on obtient le compélmentaire : cad s'il était minimal ou non
+	public Automate automate_complementaire(Automate automate) {
+		if(!automate.est_un_automate_deterministe(automate) && !automate.est_un_automate_complet(automate)) {
+			System.out.println("Impossible d'avoir le complémentaire l'automate n'est pas déterminsite et compelt");
+			System.out.println("Automate renvoyé non modifié");
+			return automate;
+		}
+		else {
+			Automate automate_complementaire = new Automate(automate);
+			List<Etat> liste_anciennes_sorties = new ArrayList<Etat>();
+			List<Etat> liste_anciennes_non_sorties = new ArrayList<Etat>();
+			
+			for(Etat etat : this.etats) {
+				if(etat.getTypes().contains(TypeEtat.EXIT)) {
+					liste_anciennes_sorties.add(etat);
+				}
+				else {
+					liste_anciennes_non_sorties.add(etat);
+				}
+			}
+			
+			for(Etat etat : liste_anciennes_sorties ) {
+				for(int i=0;i<etat.getTypes().size();i++) {
+					if(etat.getTypes().get(i)==TypeEtat.EXIT) {
+						etat.getTypes().remove(i);
+					}	
+				}
+			}
+			
+			for(Etat etat : liste_anciennes_non_sorties ) {
+				etat.getTypes().add(TypeEtat.EXIT);
+			}
+			
+			
+			System.out.println("Automate complémentaire créé");
+			return automate_complementaire;
+		}
+		
+	}
 }

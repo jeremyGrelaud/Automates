@@ -343,6 +343,69 @@ public class Automate {
 
 	}
 	*/
+	
+	public Automate determinisation(Automate automate) {
+		Automate automate_deter_async;
+		
+		
+		if(est_un_automate_asynchrone(automate)) {
+			System.out.println("deter asynchrone pas encore faite");
+			return null;
+		}
+		else {
+			if(est_un_automate_deterministe(automate)) {
+				if(est_un_automate_complet(automate)) {
+					 automate_deter_async = new Automate(automate);
+				}
+				else {
+					 automate_deter_async = completion(automate);
+				}
+			}
+			else {
+				 automate_deter_async = determinisation_et_completion_synchrone (automate);
+			}
+		}
+		
+		return automate_deter_async;
+	}
+	
+	public Automate determinisation_et_completion_synchrone(Automate automate) {
+		Automate automate_deter_async = new Automate();
+		automate_deter_async.setAlphabet(automate.getAlphabet());
+		List<Etat> liste_entrees = new ArrayList<Etat>();
+		
+		for(Etat etat : this.etats) {
+			if(etat.getTypes().contains(TypeEtat.ENTRY)) {
+				liste_entrees.add(etat);
+			}
+		}
+		//s'il y a plusieurs entrées on va devoir les fusionner en une nouvelle entrée
+		Etat new_entry = new Etat(liste_entrees.get(0));
+		
+		for(int i=1;i<liste_entrees.size();i++) {
+			new_entry.getTypes().addAll(liste_entrees.get(i).getTypes());
+			for(String clef : liste_entrees.get(i).getTransi().keySet()) { //pour toutes les clefs
+				for(int j=0;j<liste_entrees.get(i).getTransi().get(clef).size();j++){
+					new_entry.addTransi( clef, liste_entrees.get(i).getTransi().get(clef).get(j));
+				}
+			}
+			new_entry.setNom(new_entry.getNom() +  liste_entrees.get(i).getNom());
+			//il faudrait aussi changer les noms des transis associées
+		}
+		
+		//on a l'entrée maintenant on va générer les nouvelles transitions
+		
+		//on regarde les etats d'arrivé qu'on a pour notre entrée
+		//si ces etats ne sont pas dans notre liste d'état alors on créer de nouveaux états
+		//on récup ses transis avec l'ancien automate
+		//on ajoute à notre table
+		//et nouveau tour de boucle on regarde s'il y a des nouveaux états 
+		//etc
+		
+
+		return automate_deter_async;
+	}
+	
 	/*** COMPLETION*/
 	public boolean est_un_automate_complet(Automate automate) {
 		if((automate.est_un_automate_asynchrone(automate)==false) && (automate.est_un_automate_deterministe(automate)==true)) {
@@ -376,6 +439,7 @@ public class Automate {
 			List<String> liste = automate.getAlphabet().getDictionary();
 			for(int i=0; i<liste.size();i++) {
 				p.addTransi(liste.get(i), p);
+				this.nbTransitions = automate.getNbTransitions()+1;
 			}
 			//on rajoute le nouvel etat p à l'automate
 			automate.etats.add(p);
@@ -387,6 +451,7 @@ public class Automate {
 					for(int i=0;i<liste.size();i++) {
 						if(!etat.getTransi().containsKey(liste.get(i))) { //check si la transi n'existe pas
 							etat.addTransi(liste.get(i), p);
+							this.nbTransitions = automate.getNbTransitions()+1;
 						}
 					}
 					
@@ -411,8 +476,9 @@ public class Automate {
 	*/
 	
 	//return true si le mot est reconnu par l'automate
+	
 	/*
-	private boolean reconnaitre(String mot, Automate automate) {
+	public boolean reconnaitre(String mot, Automate automate) {
 		for(Etat etat : this.etats) {
 			if(etat.getTypes().contains(TypeEtat.ENTRY)) {
 				//on commence à essayer de lire
@@ -421,6 +487,9 @@ public class Automate {
 				Etat new_entry = new Etat(etat);
 				while(continuer && i<mot.length()) {
 					if(new_entry.getTransi().get(String.valueOf(mot.charAt(i)))!=null) {
+						for(int j=0; j<new_entry.getTransi().get(String.valueOf(mot.charAt(i))).size();j++) {
+							reconnaitre(String.valueOf(mot.substring(1)), new_entry.getTransi().get(String.valueOf(mot.charAt(i))).get(i));
+						}
 						//new_entry = new_entry.getTransi().get(String.valueOf(mot.charAt(i)));
 						//il faudrait faire une fc récursive qui appel avec tous les états terminaux de la liste
 						//puis quand ça arrive à la fin du mot faut regarder si c'est un état de sortie
@@ -429,6 +498,9 @@ public class Automate {
 					else {
 						continuer = false;
 					}
+				}
+				if(continuer==true && new_entry.getTypes().contains(TypeEtat.EXIT)) {
+					return true;
 				}
 				
 			}
@@ -439,6 +511,24 @@ public class Automate {
 	*/
 	
 	
+	/* ca marche pas
+	private void reconnaitre(String mot, Etat new_entry) {
+		int i=0;
+		boolean continuer = true;
+		while(continuer && i<mot.length()) {
+			if(new_entry.getTransi().get(String.valueOf(mot.charAt(i)))!=null) {
+				for(int j=0; j<new_entry.getTransi().get(String.valueOf(mot.charAt(i))).size();j++) {
+					reconnaitre(String.valueOf(mot.substring(1)), new_entry.getTransi().get(String.valueOf(mot.charAt(i))).get(i));
+				}
+				i++;
+			}
+			else {
+				continuer = false;
+			}
+		}
+		
+	}
+	*/
 	/***LANGAGE COMPLEMENTAIRE*/
 	/*
 	public void construction_complementaire_reconaissance(Automate automate) {

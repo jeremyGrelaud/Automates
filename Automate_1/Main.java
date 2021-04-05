@@ -10,15 +10,15 @@ public class Main {
 		//Automate automate = FileReader.createAutomateObject("D:/Efrei/L2/java/workspace/Automate/src/Automate_1/B10-8.txt");
 		Automate automate = FileReader.createAutomateObject("D:/Efrei/L2/java/workspace/Automate/src/Automate_1/B10-1.txt");
 		
-		automate.afficher_automate(automate);    
+		//automate.afficher_automate(automate);    
 		
-		automate.standardisation(automate);
+		//automate.standardisation(automate);
 		
-		automate.afficher_automate(automate);   
+		//automate.afficher_automate(automate);   
 		
-		automate.est_un_automate_asynchrone(automate);
+		//automate.est_un_automate_asynchrone(automate);
 		
-		automate.est_un_automate_deterministe(automate);
+		//automate.est_un_automate_deterministe(automate);
 		
 		automate.est_un_automate_complet(automate);
 		
@@ -27,6 +27,13 @@ public class Main {
 		System.out.println("");
 		automate.afficher_automate(automate);
 		
+		//automate.automate_complementaire(automate);
+		//automate.afficher_automate(automate);
+		
+		//System.out.println(automate.reconnaitre("aa", automate));
+		
+		automate.determinisation_et_completion_synchrone(automate);
+		automate.afficher_automate(automate);
 
 	}
 	

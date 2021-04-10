@@ -39,12 +39,11 @@ public class Automate {
 		this.nbTransitions = automate.getNbTransitions();
 	}
 	
-	
 	public int getNbTransitions() {
 		return nbTransitions;
 	}
 
-	public void setNbTransitions(int nbTransitions) {
+	public void setNbTransitions(final int nbTransitions) {
 		this.nbTransitions = nbTransitions;
 	}
 
@@ -63,7 +62,6 @@ public class Automate {
 		}
 		return nouveau;
 	}*/
-	
 	
 	public List<Etat> getEtats() {
 		return this.etats;
@@ -537,7 +535,7 @@ public class Automate {
 		List<String> liste = automate.getAlphabet().getDictionary();
 		for(int i=0; i<liste.size();i++) {
 			p.addTransi(liste.get(i), p);
-			automate.setNbTransitions(automate.getNbTransitions()+1);
+			automate.nbTransitions = automate.getNbTransitions()+1;
 		}
 		//on rajoute le nouvel etat p à l'automate
 		automate.etats.add(p);
@@ -549,7 +547,7 @@ public class Automate {
 				for(int i=0;i<liste.size();i++) {
 					if(!etat.getTransi().containsKey(liste.get(i))) { //check si la transi n'existe pas
 						etat.addTransi(liste.get(i), p);
-						automate.setNbTransitions(automate.getNbTransitions()+1);
+						automate.nbTransitions = automate.getNbTransitions()+1;
 					}
 				}
 				
@@ -723,9 +721,11 @@ public class Automate {
 	*/
 	
 	//il faudrait indiquer à partir de quel type d'automate on obtient le compélmentaire : cad s'il était minimal ou non
-	public Automate automate_complementaire(Automate automate) {
+	public Automate automate_complementaire() {
+		Automate automate = new Automate(this);
+		
 		if(!automate.est_un_automate_deterministe() && !automate.est_un_automate_complet()) {
-			System.out.println("Impossible d'avoir le complémentaire l'automate n'est pas déterminsite et compelt");
+			System.out.println("Impossible d'avoir le complémentaire l'automate n'est pas déterminsite et complet");
 			System.out.println("Automate renvoyé non modifié");
 			return automate;
 		}
@@ -734,7 +734,7 @@ public class Automate {
 			List<Etat> liste_anciennes_sorties = new ArrayList<Etat>();
 			List<Etat> liste_anciennes_non_sorties = new ArrayList<Etat>();
 			
-			for(Etat etat : this.etats) {
+			for(Etat etat : automate.etats) {
 				if(etat.getTypes().contains(TypeEtat.EXIT)) {
 					liste_anciennes_sorties.add(etat);
 				}

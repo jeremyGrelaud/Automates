@@ -12,6 +12,11 @@ public class Alphabet{
 		
 		this.dictionary = new ArrayList<String>(taille); //taille initiale
 	}
+	
+	public Alphabet(Alphabet alphabet) {
+		
+		this.dictionary = alphabet.getDictionary(); //taille initiale
+	}
  
 
 	public List<String> getDictionary() { //renvoie l alphabet sous forme de liste de string

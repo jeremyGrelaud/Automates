@@ -1,4 +1,3 @@
-package Automate_1;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,7 +32,8 @@ public class Automate {
 		this.nbTransitions = 0;
 		//quand on initialise on sait pas encore on set plus tard en lisant le fichier
 	}
-	public Automate(Automate automate) { //constructeur de copie
+	public Automate(final Automate automate) { //constructeur de copie
+		this();
 		this.etats = automate.getEtats();
 		this.alphabet = automate.getAlphabet();
 		this.nbTransitions = automate.getNbTransitions();
@@ -49,22 +49,35 @@ public class Automate {
 	}
 
 	public Alphabet getAlphabet() {
-		return alphabet;
+		return new Alphabet(this.alphabet);
 	}
 
-	public void setAlphabet(Alphabet alphabet) {
+	public void setAlphabet(final Alphabet alphabet) {
 		this.alphabet = alphabet;
 	}
-
+	/*
+	public List<Etat> getEtats() {
+		List<Etat> nouveau = new ArrayList<Etat>();
+		for(int i=0; i<this.etats.size();i++) {
+			nouveau.add(this.etats.get(i));
+		}
+		return nouveau;
+	}*/
+	
+	
 	public List<Etat> getEtats() {
 		return this.etats;
 	}
 
-	public void setEtats(List<Etat> etats) {
-		this.etats = etats;
+	public void setEtats(final List<Etat> etats) {
+		List<Etat> nouveau = new ArrayList<Etat>();
+		for(int i=0; i<this.etats.size();i++) {
+			nouveau.add(this.etats.get(i));
+		}
+		this.etats = nouveau;
 	}
 
-	public boolean containsEtats(String la_chaine) {  //faut check les id des etats de la liste et voir si c'est dedans
+	public boolean containsEtats(final String la_chaine) {  //faut check les id des etats de la liste et voir si c'est dedans
 		//for(int i=0;i<etats.size() && i<getNbTransitions()  ;i++) { //ca devrait être le nbr de transis associées à cet état
 		//	if(etats.get(i).getNom().equals(la_chaine)) {
 		//		return true;
@@ -79,7 +92,7 @@ public class Automate {
 	}
 
 	
-	public Etat getEtatByNom(String id) { //on veut recup un etat specifique de l automate avec son id
+	public Etat getEtatByNom(final String id) { //on veut recup un etat specifique de l automate avec son id
 		//on parcours la liste jusqu'à trouver l'etat correpsondant
 		if(this.containsEtats(id)) {
 			for(int i=0;i<this.getEtats().size();i++) {
@@ -103,7 +116,7 @@ public class Automate {
         return null; // if the state is not present in the automaton
     }*/
 	
-	public void afficher_automate(Automate automate) {
+	public void afficher_automate() {
 		
 		/*
 		System.out.println(automate.getAlphabet().getDictionary().get(2));
@@ -115,7 +128,7 @@ public class Automate {
 		//2*1 normalement
 		//c'est chelou les transis epsilon on pas l'air d'être accessible
 		
-		
+		Automate automate = new Automate(this);
 		
 		System.out.print("L'alphabet : ");
 		for(int i=0; i<automate.alphabet.getDictionary().size();i++) {
@@ -132,7 +145,7 @@ public class Automate {
 		
 		System.out.println("");
 		
-		System.out.print("Les etats intiaux : ");
+		System.out.print("Les etats initiaux : ");
 		for(int i=0; i<automate.etats.size();i++) {
 			if(automate.getEtats().get(i).getTypes().contains(TypeEtat.ENTRY)) {
 				System.out.print(automate.getEtats().get(i).getNom()+" ");
@@ -181,10 +194,12 @@ public class Automate {
 	}
 	
 	/*** STANDARDISATION*/
-	public boolean est_standard(Automate automate) { //il faut une seule entrée et aucune transi vers cette entrée
+	public boolean est_standard() { //il faut une seule entrée et aucune transi vers cette entrée
+		
+		Automate automate = new Automate(this);
 		int compteur = 0;
 		Etat new_etat = null;
-		for(Etat etat : this.etats) {
+		for(Etat etat : automate.etats) {
 			if(etat.getTypes().contains(TypeEtat.ENTRY)) {
 				compteur++;
 				new_etat = new Etat(etat);
@@ -199,7 +214,7 @@ public class Automate {
 			String id = new_etat.getNom();
 			//aucune transi ne doit avoir comme etat d'arrivée un etat.getNom() == id
 			
-			for(Etat etat : this.etats) {
+			for(Etat etat : automate.etats) {
 				for(String clef : etat.getTransi().keySet()) { //string avec tt les clefs
 					
 					if(Arrays.toString(etat.getTransi().get(clef).toArray()).contains(id)) {
@@ -212,15 +227,18 @@ public class Automate {
 		}
 	}
 	
-	public Automate standardisation(Automate automate) {
+	public Automate standardisation() {
 		
-		if(est_standard(automate)) {
+		Automate automate = new Automate(this);
+		if(est_standard()) {
 			System.out.println("Votre automate est deja standard ! ");
 			return automate;
 		}
 		else {
+			System.out.println("Standardisation !");
+			
 			//faire une fonction qui recup tous les etats de TypeEtat ENTRY
-			List<Etat> etats_entree = get_toutes_entree(automate);
+			List<Etat> etats_entree = automate.get_toutes_entree();
 			
 			//on créer un nouvel etat d'entrée et on va copier les transitions des anciennes entrées dedans
 			Etat nouvelle_entree = new Etat("i");
@@ -253,10 +271,11 @@ public class Automate {
 		
 	}
 	
-	private List<Etat> get_toutes_entree(Automate automate) {
+	private List<Etat> get_toutes_entree() {
 		List<Etat> liste = new ArrayList<Etat>();
+		Automate automate = new Automate(this);
 		
-		for(Etat etat : this.etats) {
+		for(Etat etat : automate.etats) {
 			if(etat.getTypes().contains(TypeEtat.ENTRY)) {
 				liste.add(etat);
 			}
@@ -266,11 +285,13 @@ public class Automate {
 	
 	
 	/*** DETERMINISATION*/
-	public boolean est_un_automate_asynchrone(Automate automate) {
+	public boolean est_un_automate_asynchrone() {
+		
+		Automate automate = new Automate(this);
 		int compteur=0;
 		String epsilon = "*";
 		
-		for(Etat etat : this.etats) {
+		for(Etat etat : automate.etats) {
 			for(String clef : etat.getTransi().keySet()) { //string avec tt les clefs
 				
 				if(clef == "") {
@@ -291,8 +312,9 @@ public class Automate {
 		
 	}
 	
-	public boolean est_un_automate_deterministe(Automate automate) { //1 seule entrée et liste pour une clef = taille 1 pas plus
+	public boolean est_un_automate_deterministe() { //1 seule entrée et liste pour une clef = taille 1 pas plus
 		
+		Automate automate = new Automate(this);
 		int compteur_entrée = 0;
 		for(int i=0; i<automate.etats.size();i++) {
 			if(automate.getEtats().get(i).getTypes().contains(TypeEtat.ENTRY)) {
@@ -313,7 +335,7 @@ public class Automate {
 				}
 			} 
 		}
-		System.out.println("\nAutomate déterministe");
+		System.out.println("\nL'automate est déterministe");
 		return true;
 	}
 	
@@ -340,7 +362,6 @@ public class Automate {
 		}
 		
 		afficher_automate_deterministe_complet(automate_deter_async);
-
 	}
 	*/
 	
@@ -348,17 +369,17 @@ public class Automate {
 		Automate automate_deter_async;
 		
 		
-		if(est_un_automate_asynchrone(automate)) {
+		if(est_un_automate_asynchrone()) {
 			System.out.println("deter asynchrone pas encore faite");
 			return null;
 		}
 		else {
-			if(est_un_automate_deterministe(automate)) {
-				if(est_un_automate_complet(automate)) {
+			if(est_un_automate_deterministe()) {
+				if(est_un_automate_complet()) {
 					 automate_deter_async = new Automate(automate);
 				}
 				else {
-					 automate_deter_async = completion(automate);
+					 automate_deter_async = completion();
 				}
 			}
 			else {
@@ -370,11 +391,14 @@ public class Automate {
 	}
 	
 	public Automate determinisation_et_completion_synchrone(Automate automate) {
-		Automate automate_deter_async = new Automate();
-		automate_deter_async.setAlphabet(automate.getAlphabet());
+		//faire une copie défensive
+		Automate ancien_automate = new Automate(this);
+		
+		Automate automate_deter_sync = new Automate();
+		automate_deter_sync.setAlphabet(ancien_automate.getAlphabet());
 		List<Etat> liste_entrees = new ArrayList<Etat>();
 		
-		for(Etat etat : this.etats) {
+		for(Etat etat : ancien_automate.etats) {
 			if(etat.getTypes().contains(TypeEtat.ENTRY)) {
 				liste_entrees.add(etat);
 			}
@@ -389,10 +413,77 @@ public class Automate {
 					new_entry.addTransi( clef, liste_entrees.get(i).getTransi().get(clef).get(j));
 				}
 			}
-			new_entry.setNom(new_entry.getNom() +  liste_entrees.get(i).getNom());
+			String ancien_nom1 = new_entry.getNom();
+			String ancien_nom2 = liste_entrees.get(i).getNom();
+			new_entry.setNom(new_entry.getNom() + liste_entrees.get(i).getNom());
 			//il faudrait aussi changer les noms des transis associées
+			
+			/***FONCTION FUSION*/
+			for(Etat etat : ancien_automate.etats) {
+				if(etat.getNom()==ancien_nom1) {
+					etat.setNom(new_entry.getNom());
+				}
+				if(etat.getNom()==ancien_nom2) {
+					etat.setNom(new_entry.getNom());
+				}
+				
+				for(String clef : etat.getTransi().keySet() ) {
+					for(int j=0;j<etat.getTransi().get(clef).size();j++){
+						if(etat.getTransi().get(clef).get(j).getNom()==ancien_nom1) {
+							etat.getTransi().get(clef).get(j).setNom(new_entry.getNom());
+						}
+						if(etat.getTransi().get(clef).get(j).getNom()==ancien_nom2) {
+							etat.getTransi().get(clef).get(j).setNom(new_entry.getNom());
+						}
+					}
+				}
+			}
+			/***FIN FUSION*/
 		}
 		
+		automate_deter_sync.getEtats().add(new_entry);
+		
+		/*Check pour la transi de notre etat si les etats existent déjà***/
+		//les fusionner si besoin et rajouter les nouveaux etats
+		//continuer la boucle do while tant qu'on ajoute un nouvel etat
+		
+		/*
+		for(Etat etat : ancien_automate.etats) {
+			if(etat.getNom()!= new_entry.getNom()) {
+				automate_deter_sync.getEtats().add(etat);
+			}
+			
+		}
+		*/
+		boolean continuer = true;
+		do {
+			int ancienne_taille = automate_deter_sync.getEtats().size();
+			for(String clef : new_entry.getTransi().keySet() ) {
+				if(new_entry.getTransi().get(clef).size()>1) {
+					//fusion faudrait fusionner 2 à 2 et rappeler ça jusqu'à ce que la taille de la liste = 1
+					Etat nouvel_etat;
+					do {
+					
+						Etat etat1 = new_entry.getTransi().get(clef).get(0);
+						Etat etat2 = new_entry.getTransi().get(clef).get(1);
+						nouvel_etat = fusion(etat1, etat2);
+						new_entry.getTransi().get(clef).remove(0);
+						
+					}while(new_entry.getTransi().get(clef).size()!=1);
+				
+					automate_deter_sync.getEtats().add(nouvel_etat);
+				}
+				else if (new_entry.getTransi().get(clef).size()==1){
+					automate_deter_sync.getEtats().add(new_entry.getTransi().get(clef).get(0));
+				}
+			}
+			
+			if(automate_deter_sync.getEtats().size()==ancienne_taille) {
+				continuer = false;
+			}
+			
+		}while(continuer);
+
 		//on a l'entrée maintenant on va générer les nouvelles transitions
 		
 		//on regarde les etats d'arrivé qu'on a pour notre entrée
@@ -402,13 +493,19 @@ public class Automate {
 		//et nouveau tour de boucle on regarde s'il y a des nouveaux états 
 		//etc
 		
-
-		return automate_deter_async;
+		
+		//compléter avant de renvoyer 
+		return automate_deter_sync;
 	}
 	
+	private Etat fusion(Etat state1, Etat state2) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	/*** COMPLETION*/
-	public boolean est_un_automate_complet(Automate automate) {
-		if((automate.est_un_automate_asynchrone(automate)==false) && (automate.est_un_automate_deterministe(automate)==true)) {
+	public boolean est_un_automate_complet() {
+		Automate automate = new Automate(this);
+		if((automate.est_un_automate_asynchrone()==false) && (automate.est_un_automate_deterministe()==true)) {
 			//check si chaque etat possède le bon nbr de clefs
 			int compteur=0;
 			for(Etat etat : this.etats) {
@@ -416,7 +513,7 @@ public class Automate {
 						compteur++;
 					}
 					if(compteur!=automate.getAlphabet().getDictionary().size()) {
-						System.out.println("\nAutomate non complet car "+etat.getNom()+"n'a pas de transi pour toutes les lettres de l'alphabet");
+						System.out.println("\nAutomate non complet car "+etat.getNom()+" n'a pas de transi pour toutes les lettres de l'alphabet");
 						
 						return false;
 					}
@@ -432,33 +529,34 @@ public class Automate {
 		}
 	}
 	
-	public Automate completion(Automate automate) {
-		
-			//créer un etat poubelle
-			Etat p = new Etat("p");
-			List<String> liste = automate.getAlphabet().getDictionary();
-			for(int i=0; i<liste.size();i++) {
-				p.addTransi(liste.get(i), p);
-				this.nbTransitions = automate.getNbTransitions()+1;
-			}
-			//on rajoute le nouvel etat p à l'automate
-			automate.etats.add(p);
-				
-			//rajouter les transitions manquantes
-			for(Etat etat : this.etats) {
-				if(etat.getTransi().size()!=liste.size()) { //nous renvoie le nbr de clef pour cet etat
-					//on rajoute 
-					for(int i=0;i<liste.size();i++) {
-						if(!etat.getTransi().containsKey(liste.get(i))) { //check si la transi n'existe pas
-							etat.addTransi(liste.get(i), p);
-							this.nbTransitions = automate.getNbTransitions()+1;
-						}
-					}
-					
-				}
-			}
-			return automate;
+	public Automate completion() {
+			
+		Automate automate = new Automate(this);
+		//créer un etat poubelle
+		Etat p = new Etat("p");
+		List<String> liste = automate.getAlphabet().getDictionary();
+		for(int i=0; i<liste.size();i++) {
+			p.addTransi(liste.get(i), p);
+			automate.setNbTransitions(automate.getNbTransitions()+1);
 		}
+		//on rajoute le nouvel etat p à l'automate
+		automate.etats.add(p);
+			
+		//rajouter les transitions manquantes
+		for(Etat etat : this.etats) {
+			if(etat.getTransi().size()!=liste.size()) { //nous renvoie le nbr de clef pour cet etat
+				//on rajoute 
+				for(int i=0;i<liste.size();i++) {
+					if(!etat.getTransi().containsKey(liste.get(i))) { //check si la transi n'existe pas
+						etat.addTransi(liste.get(i), p);
+						automate.setNbTransitions(automate.getNbTransitions()+1);
+					}
+				}
+				
+			}
+		}
+		return automate;
+	}
 	
 	
 	/***MINIMISATION*/
@@ -474,6 +572,87 @@ public class Automate {
 		}
 	}
 	*/
+	
+	
+	
+	public boolean reconnaitre_mot_automate_determinsite ( String mot ) {
+		
+		if(!this.est_un_automate_deterministe()) {
+			System.out.println("Impossible de vérifier votre automate n'est pas déterminsite");
+			return false;
+		}
+		else {	
+			Etat etat_courant = null; /*etat de départ de l'algo*/
+			for(Etat etat : this.etats) {
+				if(etat.getTypes().contains(TypeEtat.ENTRY)) {
+					 etat_courant = etat;
+				}
+			}
+		
+			/*il pourrait y avoir plusieurs entrées si pas déterministe*/
+			
+			/*si mot vide*/
+			if(mot.equals("")) {
+				if(etat_courant.getTypes().contains(TypeEtat.EXIT)) {
+					return true;
+				}
+				else {
+					return false;
+				}
+			}
+						
+			int index_mot=0;
+			String symbole_courant = String.valueOf(mot.charAt(index_mot));
+			if(existe_transi(etat_courant, symbole_courant)) {
+				etat_courant = etat_courant.getTransi().get(symbole_courant).get(0);
+			}
+			else {
+				return false;
+			}
+		
+			do {
+	
+				/*si on est à la fin du mot et que la lettre correspond à la denrière lettre du mot et qu'on est sur une sortie c bon*/
+				if(index_mot==(mot.length()-1) && symbole_courant.equals(String.valueOf(mot.charAt(mot.length()-1)))){
+					if(etat_courant.getTypes().contains(TypeEtat.EXIT)) {
+						return true;
+					}
+					
+					else {
+						return false;
+					}
+					
+				}
+				String symbole_futur = String.valueOf(mot.charAt(index_mot+1));
+				if(existe_transi(etat_courant, symbole_futur)) {
+					/*il peut y avoir plusieurs etats cibles si non deterministe*/
+					Etat etat_cible = etat_courant.getTransi().get(symbole_futur).get(0);
+					etat_courant = etat_cible;
+					index_mot++;
+					symbole_courant = String.valueOf(mot.charAt(index_mot));
+				}
+				else {
+					return false;
+				}
+				
+				
+			}while(index_mot<mot.length());
+			
+			/*si tjrs pas reconnu alors false*/
+			return false;
+		}
+		
+	}
+	
+	private boolean existe_transi(Etat etat_courant, String symbole_courant) {
+		if(etat_courant.getTransi().get(symbole_courant)== null) {
+			return false;
+		}
+		else {
+			return true;
+		}
+		
+	}
 	
 	//return true si le mot est reconnu par l'automate
 	
@@ -511,6 +690,7 @@ public class Automate {
 	*/
 	
 	
+
 	/* ca marche pas
 	private void reconnaitre(String mot, Etat new_entry) {
 		int i=0;
@@ -544,7 +724,7 @@ public class Automate {
 	
 	//il faudrait indiquer à partir de quel type d'automate on obtient le compélmentaire : cad s'il était minimal ou non
 	public Automate automate_complementaire(Automate automate) {
-		if(!automate.est_un_automate_deterministe(automate) && !automate.est_un_automate_complet(automate)) {
+		if(!automate.est_un_automate_deterministe() && !automate.est_un_automate_complet()) {
 			System.out.println("Impossible d'avoir le complémentaire l'automate n'est pas déterminsite et compelt");
 			System.out.println("Automate renvoyé non modifié");
 			return automate;

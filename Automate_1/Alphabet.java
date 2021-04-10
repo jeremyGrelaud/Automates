@@ -13,9 +13,14 @@ public class Alphabet{
 		this.dictionary = new ArrayList<String>(taille); //taille initiale
 	}
 	
+<<<<<<< Updated upstream
 	public Alphabet(Alphabet alphabet) {
 		
 		this.dictionary = alphabet.getDictionary(); //taille initiale
+=======
+	public Alphabet(Alphabet a) {
+		this.dictionary = a.dictionary;
+>>>>>>> Stashed changes
 	}
  
 

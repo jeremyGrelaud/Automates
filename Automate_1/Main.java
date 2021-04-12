@@ -16,19 +16,24 @@ public class Main {
 		
 		Automate copie = new Automate(automate);
 		
-		copie.completion();
-		copie.standardisation();
+		//copie.completion();
+		//copie.standardisation();
 		//copie.est_un_automate_complet();
 		System.out.println("");
 		copie.afficher_automate();
 		copie.est_un_automate_deterministe();
 		copie.est_un_automate_complet();
 		
+		/*
 		System.out.println("");
 		copie.automate_complementaire();
 		copie.afficher_automate();
+		*/
 		
-		determinise.reconnaitre_plusieurs_mot();
+		System.out.println(copie.reconnaitre_mot_automate("aba"));
+		copie.reconnaitre_plusieurs_mot();
+		
+		//determinise.reconnaitre_plusieurs_mot();
 
 		
 		//System.out.println(copie.est_standard());

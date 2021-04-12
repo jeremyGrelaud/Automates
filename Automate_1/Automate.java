@@ -317,19 +317,19 @@ public class Automate {
 		} 
 		
 		if(compteur_entree>1) {
-			System.out.println("\nNon d�terministe car plus d'une entr�e");
+			System.out.println("\nNon deterministe car plus d'une entree");
 			return false;
 		}
 		
 		for(Etat etat : this.etats) {
 			for(String clef : etat.getTransi().keySet()) { //string avec tt les clefs
 				if(etat.getTransi().get(clef).size()>1) {
-					System.out.println("\nNon d�terministe car on a la transi : "+etat.getNom()+"-"+clef+"-"+etat.getTransi().get(clef).toString());
+					System.out.println("\nNon deterministe car on a la transi : "+etat.getNom()+"-"+clef+"-"+etat.getTransi().get(clef).toString());
 					return false;
 				}
 			} 
 		}
-		System.out.println("\nL'automate est d�terministe");
+		System.out.println("\nL'automate est deterministe");
 		return true;
 	}
 	
@@ -601,11 +601,105 @@ public class Automate {
 	*/
 	
 	
+	/*RECONAISSANCE POUR NON DETERMINISTE*/
+	private boolean reconaissance_etat(Etat etat_courant, String mot) {
+		/*si mot vide*/
+		if(mot.equals("")) {
+			if(etat_courant.getTypes().contains(TypeEtat.EXIT)) {
+				return true;
+			}
+			else {
+				return false;
+			}
+		}
+					
+		int index_mot=0;
+		String symbole_courant = String.valueOf(mot.charAt(index_mot));
+		if(existe_transi(etat_courant, symbole_courant)) {
+			/*il faut appeler une fc pour chaque etats d'arrivée  */
+			List<Boolean> liste = new ArrayList<Boolean>();
+			for(Etat etat_courant1 : etat_courant.getTransi().get(symbole_courant)) {
+				liste.add(this.reconaissance_part2(etat_courant1, mot, symbole_courant));
+			}
+			if(liste.contains(true)) {
+				return true;
+			}
+			else {
+				return false;
+			}
+
+		}
+		else {
+			return false;
+		}
+		
+	
+	
+		
+	}
+	private boolean reconaissance_part2(Etat etat_courant, String mot, String symbole_courant) {
+		int index_mot=0;
+		do {
+
+			/*si on est a la fin du mot et que la lettre correspond a la denriere lettre du mot et qu'on est sur une sortie c bon*/
+			if(index_mot==(mot.length()-1) && symbole_courant.equals(String.valueOf(mot.charAt(mot.length()-1)))){
+				if(etat_courant.getTypes().contains(TypeEtat.EXIT)) {
+					return true;
+				}
+				
+				else {
+					return false;
+				}
+				
+			}
+			String symbole_futur = String.valueOf(mot.charAt(index_mot+1));
+			if(existe_transi(etat_courant, symbole_futur)) {
+				/*il peut y avoir plusieurs etats cibles si non deterministe*/
+				Etat etat_cible = etat_courant.getTransi().get(symbole_futur).get(0);
+				/*faudrait un appel récursif avec tous les états*/
+				etat_courant = etat_cible;
+				index_mot++;
+				symbole_courant = String.valueOf(mot.charAt(index_mot));
+			}
+			else {
+				return false;
+			}
+			
+			
+		}while(index_mot<mot.length());
+		
+		/*si tjrs pas reconnu alors false*/
+		return false;	
+		
+	}
+	public boolean reconnaitre_mot_automate(String mot) {
+		
+		List<Etat> etats_entree = new ArrayList<Etat>();
+		for(Etat etat : this.etats) {
+			if(etat.getTypes().contains(TypeEtat.ENTRY)) {
+				 etats_entree.add(etat);
+			}
+		}
+		/* pour chaque entree dans la liste on va appliquer l'algo*/
+		List<Boolean> liste = new ArrayList<Boolean>();
+		for(Etat etat_courant : etats_entree) {
+			liste.add(this.reconaissance_etat(etat_courant, mot));
+		}
+		/*si c'est reconnu en passant par un des etats de depart on renvoie true*/
+		if(liste.contains(true)) {
+			return true;
+		}
+		else {
+			return false;
+		}
+}
+	/*FIN RECONAISSANCE POUR NON DETERMINISTE*/
+		
 	
 	public boolean reconnaitre_mot_automate_determinsite ( String mot ) {
 		
 		if(!this.est_un_automate_deterministe()) {
-			System.out.println("Impossible de v�rifier votre automate n'est pas d�terminsite");
+			System.out.println("Impossible de verifier votre automate n'est pas determinsite");
 			return false;
 		}
 		else {	
@@ -683,7 +777,7 @@ public class Automate {
 		
 	}
 	
-	//marche seulement pour un automate déterministe pour l'instant
+	//POUR TAPER PLUSIEURS MOTS A LA SUITE
 	public void reconnaitre_plusieurs_mot() {
 		Scanner sc = new Scanner(System.in);
 		String mot = "";
@@ -694,12 +788,22 @@ public class Automate {
 			System.out.println("Veuillez saisir un mot :");
 			mot = sc.nextLine();
 			if(!mot.equals("QUIT")) {
-				
-				if(this.reconnaitre_mot_automate_determinsite(mot)) {
-					System.out.println("Le mot "+mot+" est reconnu par l'automate");
+				if(this.est_un_automate_deterministe()) {
+					if(this.reconnaitre_mot_automate_determinsite(mot)) {
+						System.out.println("Le mot "+mot+" est reconnu par l'automate");
+					}
+					else {
+						System.out.println("Le mot "+mot+" n'est pas reconnu par l'automate");
+					}
 				}
 				else {
-					System.out.println("Le mot "+mot+" n'est pas reconnu par l'automate");
+					//METHODE POUR LES NON DETERMINISTE
+					if(this.reconnaitre_mot_automate(mot)) {
+						System.out.println("Le mot "+mot+" est reconnu par l'automate");
+					}
+					else {
+						System.out.println("Le mot "+mot+" n'est pas reconnu par l'automate");
+					}
 				}
 			}
 		}while(!mot.equals("QUIT"));

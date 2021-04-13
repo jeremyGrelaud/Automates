@@ -20,9 +20,15 @@ public class Main {
 		//copie.standardisation();
 		//copie.est_un_automate_complet();
 		System.out.println("");
-		copie.afficher_automate();
+		copie.afficher_automate(); 
+		/*
 		copie.est_un_automate_deterministe();
 		copie.est_un_automate_complet();
+		*/
+		System.out.println("");
+		copie = copie.determinise();
+		copie.afficher_automate();
+		
 		
 		/*
 		System.out.println("");
@@ -30,8 +36,10 @@ public class Main {
 		copie.afficher_automate();
 		*/
 		
+		/*
 		System.out.println(copie.reconnaitre_mot_automate("aba"));
 		copie.reconnaitre_plusieurs_mot();
+		*/
 		
 		//determinise.reconnaitre_plusieurs_mot();
 

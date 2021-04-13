@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
+import java.util.Stack;
 
 /* mod�le fichier � lire
 2    = nbr lettres
@@ -921,4 +922,195 @@ public class Automate {
 		}
 		
 	}
+	
+	
+	/*DETERMINISATION*/
+	/**
+	 * Cree l'automate determinise
+	 * @return l'automate determinise
+	 */
+	public Automate determinise(){
+		
+		if(this.est_un_automate_deterministe()) {
+			return this;
+		}
+		
+		
+		//faire une copie defensive
+		Automate ancien_automate = new Automate(this);
+		
+		Automate automate_deter_sync = new Automate();
+		automate_deter_sync.setAlphabet(ancien_automate.getAlphabet());
+		List<Etat> liste_entrees = new ArrayList<Etat>();
+		
+		for(Etat etat : ancien_automate.etats) {
+			if(etat.getTypes().contains(TypeEtat.ENTRY)) {
+				liste_entrees.add(etat);
+			}
+		}
+		//s'il y a plusieurs entrees on va devoir les fusionner en une nouvelle entr�e
+		Etat new_entry = new Etat(liste_entrees.get(0));
+		
+		for(int i=1;i<liste_entrees.size();i++) {
+			new_entry.getTypes().addAll(liste_entrees.get(i).getTypes());
+			for(String clef : liste_entrees.get(i).getTransi().keySet()) { //pour toutes les clefs
+				for(int j=0;j<liste_entrees.get(i).getTransi().get(clef).size();j++){
+					new_entry.addTransi( clef, liste_entrees.get(i).getTransi().get(clef).get(j));
+					//automate_deter_sync.nbTransitions = automate_deter_sync.getNbTransitions()+1;
+				}
+			}
+			String ancien_nom1 = new_entry.getNom();
+			String ancien_nom2 = liste_entrees.get(i).getNom();
+			new_entry.setNom(ancien_nom1 + "."+ ancien_nom2);
+			
+			//il faudrait aussi changer les noms des transis associees
+			
+			for(Etat etat : ancien_automate.etats) {
+				if(etat.getNom().equals(ancien_nom1) || etat.getNom().equals(ancien_nom2) ) {
+					etat.setNom(new_entry.getNom());
+				}
+				/*
+				for(String clef : etat.getTransi().keySet()) {
+					for(int j=0; j<etat.getTransi().get(clef).size();j++) {
+						if(etat.getTransi().get(clef).get(j).getNom().equals(ancien_nom1) || etat.getTransi().get(clef).get(j).getNom().equals(ancien_nom1) ) {
+							etat.getTransi().get(clef).get(j).setNom(new_entry.getNom());
+						}
+					}
+				}
+				*/
+					
+			}
+		}
+		
+	
+		/*il faut supprimer les etats en double dans ancien automate*/
+		
+		/*On va créer une pile avec au départ juste l'état initial dedans*/
+		/*puis dans un tant que pile n'est pas vide à chaque fois on va regarder si de nouveaux etats apparaissent*/
+		/*on aura peut être besoin d'une liste de string pour les noms des etats deja apparus*/
+		List<Etat> liste_nouveaux_etats_determinse = new ArrayList<Etat>();
+		/*on ajoutera ensuite tous les états de cette liste à l'automate*/
+		liste_nouveaux_etats_determinse.add(new_entry);
+		
+		Stack<Etat> pile = new Stack<Etat>();
+		pile.push(new_entry);
+		
+		while(!pile.empty()){
+			Etat etat_courant = pile.pop();
+			
+			/*on regarde les transis*/
+			for(String clef : etat_courant.getTransi().keySet()) {
+
+				
+				if((etat_courant.getTransi().get(clef).size()>1)){
+					/*on appelle la fonction merge*/
+					Etat nouvel_etat = merge(etat_courant.getTransi().get(clef));
+					liste_nouveaux_etats_determinse.add(nouvel_etat);
+					pile.push(nouvel_etat);
+				}
+				
+				else if((etat_courant.getTransi().get(clef).size()==1) && (!liste_nouveaux_etats_determinse.contains(etat_courant.getTransi().get(clef).get(0)))) {
+					/*alors on ajoute cet etat à la liste et à la pile*/
+					Etat nouvel_etat = etat_courant.getTransi().get(clef).get(0);
+					liste_nouveaux_etats_determinse.add(nouvel_etat);
+					pile.push(nouvel_etat);
+				}
+				
+				automate_deter_sync.nbTransitions = automate_deter_sync.getNbTransitions()+1;
+				/*sinon si c'est une liste vide on fait rien*/
+			}
+		}
+		 
+		for(Etat etat : liste_nouveaux_etats_determinse ) {
+			for(String clef : etat.getTransi().keySet()) {
+				
+				if(etat.getTransi().get(clef).size()>1) {
+					for(int i=1;i<etat.getTransi().get(clef).size();i++) {
+						etat.getTransi().get(clef).remove(1);
+					}
+				}
+			}
+		}
+		
+		for(Etat etat : liste_nouveaux_etats_determinse ) {
+			if(etat.getTypes().contains(TypeEtat.ENTRY) && !etat.getNom().equals(new_entry.getNom())) {
+				etat.getTypes().remove(TypeEtat.ENTRY);
+			}
+		}
+			
+		for(Etat etat : liste_nouveaux_etats_determinse ) {
+			if(!automate_deter_sync.containsEtats(etat.getNom())) {
+				automate_deter_sync.etats.add(etat);
+			}
+		}
+		return automate_deter_sync;
+	}
+	
+	private Etat merge(List<Etat> liste) {
+		Etat new_etat = new Etat(liste.get(0));	
+		//on regarde si les autres etats contiennent un type que l'etat d'indice 0 n'a pas
+		for(int j=1; j<liste.size();j++) {
+			for(int i=0; i<liste.get(j).getTypes().size();i++) {
+				if(!new_etat.getTypes().contains(liste.get(j).getTypes().get(i))) {
+					new_etat.getTypes().add(liste.get(j).getTypes().get(i));
+				}
+			}
+		}
+	
+		List<String> liste_anciens_noms = new ArrayList<String>();
+		liste_anciens_noms.add(new_etat.getNom());
+		//maintenant on fusionne les noms
+		for(int i=1; i<liste.size();i++) {
+			liste_anciens_noms.add(liste.get(i).getNom());
+			new_etat.setNom(new_etat.getNom() +"."+ liste.get(i).getNom());
+		}
+		
+		//il va falloir remplacer tous les anciens noms par le nouveau
+	
+		
+		//mtn s'occupper des transitions
+		for(Etat etat : liste) {
+			for(String clef : new_etat.getTransi().keySet() ) {
+
+				if(etat.getTransi().get(clef)!=null) {
+					for(int i=0;i<etat.getTransi().get(clef).size();i++) {
+						if(!new_etat.getTransi().get(clef).contains(etat.getTransi().get(clef).get(i))) {
+							new_etat.getTransi().get(clef).add(etat.getTransi().get(clef).get(i));
+						}
+						
+					}
+				}
+			}
+		}
+		
+		//mtn il faut changer les noms dans la table de transi
+		// tous les etats dont le nom appartient à la liste des anciens noms
+		//doivent avoir comme nouveau nom new_etat.getNom()
+		
+		for(Etat etat : this.etats) {
+			for(String clef : etat.getTransi().keySet() ) {
+				for(Etat etat_destination : etat.getTransi().get(clef)) {
+					if(liste_anciens_noms.contains(etat_destination.getNom())) {
+						etat_destination.setNom(new_etat.getNom());
+					}
+				}
+			}
+		}
+		
+		
+		return new_etat;
+	}
+		
+		
+	/* Les piles en java
+		
+		Stack<Etat> pile = new Stack<Etat>();
+
+		pile.push(init);
+		pile.pop();
+
+		while(!pile.empty()){
+			
+	}
+	*/
 }

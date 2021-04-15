@@ -2,6 +2,7 @@ package Automate_1;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
 import java.util.Stack;
@@ -934,118 +935,134 @@ public class Automate {
 		if(this.est_un_automate_deterministe()) {
 			return this;
 		}
-		
-		
-		//faire une copie defensive
-		Automate ancien_automate = new Automate(this);
-		
-		Automate automate_deter_sync = new Automate();
-		automate_deter_sync.setAlphabet(ancien_automate.getAlphabet());
-		List<Etat> liste_entrees = new ArrayList<Etat>();
-		
-		for(Etat etat : ancien_automate.etats) {
-			if(etat.getTypes().contains(TypeEtat.ENTRY)) {
-				liste_entrees.add(etat);
-			}
-		}
-		//s'il y a plusieurs entrees on va devoir les fusionner en une nouvelle entr�e
-		Etat new_entry = new Etat(liste_entrees.get(0));
-		
-		for(int i=1;i<liste_entrees.size();i++) {
-			new_entry.getTypes().addAll(liste_entrees.get(i).getTypes());
-			for(String clef : liste_entrees.get(i).getTransi().keySet()) { //pour toutes les clefs
-				for(int j=0;j<liste_entrees.get(i).getTransi().get(clef).size();j++){
-					new_entry.addTransi( clef, liste_entrees.get(i).getTransi().get(clef).get(j));
-					//automate_deter_sync.nbTransitions = automate_deter_sync.getNbTransitions()+1;
-				}
-			}
-			String ancien_nom1 = new_entry.getNom();
-			String ancien_nom2 = liste_entrees.get(i).getNom();
-			new_entry.setNom(ancien_nom1 + "."+ ancien_nom2);
+		else {
+
+			//faire une copie defensive
+			Automate ancien_automate = new Automate(this);
 			
-			//il faudrait aussi changer les noms des transis associees
+			Automate automate_deter_sync = new Automate();
+			automate_deter_sync.setAlphabet(ancien_automate.getAlphabet());
 			
-			for(Etat etat : ancien_automate.etats) {
-				if(etat.getNom().equals(ancien_nom1) || etat.getNom().equals(ancien_nom2) ) {
-					etat.setNom(new_entry.getNom());
-				}
-				/*
-				for(String clef : etat.getTransi().keySet()) {
-					for(int j=0; j<etat.getTransi().get(clef).size();j++) {
-						if(etat.getTransi().get(clef).get(j).getNom().equals(ancien_nom1) || etat.getTransi().get(clef).get(j).getNom().equals(ancien_nom1) ) {
-							etat.getTransi().get(clef).get(j).setNom(new_entry.getNom());
-						}
+			List<Etat> liste_entrees = this.get_toutes_entree();
+		
+			Etat new_entry = merge(liste_entrees);
+			
+			/*
+			//s'il y a plusieurs entrees on va devoir les fusionner en une nouvelle entree
+			Etat new_entry = new Etat(liste_entrees.get(0));
+			
+			
+			for(int i=1;i<liste_entrees.size();i++) {
+				new_entry.getTypes().addAll(liste_entrees.get(i).getTypes());
+				for(String clef : liste_entrees.get(i).getTransi().keySet()) { //pour toutes les clefs
+					for(int j=0;j<liste_entrees.get(i).getTransi().get(clef).size();j++){
+						new_entry.addTransi( clef, liste_entrees.get(i).getTransi().get(clef).get(j));
+						//automate_deter_sync.nbTransitions = automate_deter_sync.getNbTransitions()+1;
 					}
 				}
-				*/
-					
-			}
-		}
-		
-	
-		/*il faut supprimer les etats en double dans ancien automate*/
-		
-		/*On va créer une pile avec au départ juste l'état initial dedans*/
-		/*puis dans un tant que pile n'est pas vide à chaque fois on va regarder si de nouveaux etats apparaissent*/
-		/*on aura peut être besoin d'une liste de string pour les noms des etats deja apparus*/
-		List<Etat> liste_nouveaux_etats_determinse = new ArrayList<Etat>();
-		/*on ajoutera ensuite tous les états de cette liste à l'automate*/
-		liste_nouveaux_etats_determinse.add(new_entry);
-		
-		Stack<Etat> pile = new Stack<Etat>();
-		pile.push(new_entry);
-		
-		while(!pile.empty()){
-			Etat etat_courant = pile.pop();
-			
-			/*on regarde les transis*/
-			for(String clef : etat_courant.getTransi().keySet()) {
+				String ancien_nom1 = new_entry.getNom();
+				String ancien_nom2 = liste_entrees.get(i).getNom();
+				new_entry.setNom(ancien_nom1 + "."+ ancien_nom2);
+				
+				//il faudrait aussi changer les noms des transis associees
 
 				
-				if((etat_courant.getTransi().get(clef).size()>1)){
-					/*on appelle la fonction merge*/
-					Etat nouvel_etat = merge(etat_courant.getTransi().get(clef));
-					liste_nouveaux_etats_determinse.add(nouvel_etat);
-					pile.push(nouvel_etat);
-				}
-				
-				else if((etat_courant.getTransi().get(clef).size()==1) && (!liste_nouveaux_etats_determinse.contains(etat_courant.getTransi().get(clef).get(0)))) {
-					/*alors on ajoute cet etat à la liste et à la pile*/
-					Etat nouvel_etat = etat_courant.getTransi().get(clef).get(0);
-					liste_nouveaux_etats_determinse.add(nouvel_etat);
-					pile.push(nouvel_etat);
-				}
-				
-				automate_deter_sync.nbTransitions = automate_deter_sync.getNbTransitions()+1;
-				/*sinon si c'est une liste vide on fait rien*/
-			}
-		}
-		 
-		for(Etat etat : liste_nouveaux_etats_determinse ) {
-			for(String clef : etat.getTransi().keySet()) {
-				
-				if(etat.getTransi().get(clef).size()>1) {
-					for(int i=1;i<etat.getTransi().get(clef).size();i++) {
-						etat.getTransi().get(clef).remove(1);
+				/*
+				for(Etat etat : ancien_automate.etats) {
+					if(etat.getNom().equals(ancien_nom1) || etat.getNom().equals(ancien_nom2) ) {
+						etat.setNom(new_entry.getNom());
 					}
+					
+					/*
+					for(String clef : etat.getTransi().keySet()) {
+						for(int j=0; j<etat.getTransi().get(clef).size();j++) {
+							if(etat.getTransi().get(clef).get(j).getNom().equals(ancien_nom1) || etat.getTransi().get(clef).get(j).getNom().equals(ancien_nom1) ) {
+								etat.getTransi().get(clef).get(j).setNom(new_entry.getNom());
+							}
+						}
+					}
+					*/
+						
+				//}
+			
+			//}
+			
+			
+			
+		
+			/*il faut supprimer les etats en double dans ancien automate*/
+			
+			/*On va créer une pile avec au départ juste l'état initial dedans*/
+			/*puis dans un tant que pile n'est pas vide à chaque fois on va regarder si de nouveaux etats apparaissent*/
+			/*on aura peut être besoin d'une liste de string pour les noms des etats deja apparus*/
+			List<Etat> liste_nouveaux_etats_determinse = new ArrayList<Etat>();
+			/*on ajoutera ensuite tous les états de cette liste à l'automate*/
+			//liste_nouveaux_etats_determinse.add(new_entry);
+			
+			Stack<Etat> pile = new Stack<Etat>();
+			pile.push(new_entry);
+			
+			while(!pile.empty()){
+				Etat etat_courant = pile.pop();
+				
+				/*
+				System.out.println(!liste_nouveaux_etats_determinse.contains(etat_courant));
+				System.out.println("etat courant : " + etat_courant);
+				System.out.println("liste " + liste_nouveaux_etats_determinse );
+				*/
+				//il arrive pas à savoir que les etats sont deja contenus dans la liste car ils on pas la même référence
+				
+				if(liste_nouveaux_etats_determinse.stream().noneMatch(etat -> etat.getNom().equals(etat_courant.getNom()))) {
+					
+					/*on regarde les transis*/
+					for(String clef : etat_courant.getTransi().keySet()) {
+		
+						if((etat_courant.getTransi().get(clef).size()>1)){
+							/*on appelle la fonction merge*/
+							Etat nouvel_etat = merge(etat_courant.getTransi().get(clef));
+							etat_courant.getTransi().get(clef).clear();
+							etat_courant.getTransi().get(clef).add(nouvel_etat);
+							
+							if(!liste_nouveaux_etats_determinse.contains(nouvel_etat)) {
+								pile.push(nouvel_etat);
+							}
+
+						}
+						
+						else if((etat_courant.getTransi().get(clef).size()==1) && (!liste_nouveaux_etats_determinse.contains(etat_courant.getTransi().get(clef).get(0)))) {
+							/*alors on ajoute cet etat à la liste et à la pile*/
+							Etat nouvel_etat = etat_courant.getTransi().get(clef).get(0);
+							if(!liste_nouveaux_etats_determinse.contains(nouvel_etat)) {
+								pile.push(nouvel_etat);
+							}
+						}
+
+						automate_deter_sync.nbTransitions = automate_deter_sync.getNbTransitions()+1;
+						/*sinon si c'est une liste vide on fait rien*/
+					}
+					liste_nouveaux_etats_determinse.add(etat_courant);
 				}
 			}
-		}
+
+			 
 		
-		for(Etat etat : liste_nouveaux_etats_determinse ) {
-			if(etat.getTypes().contains(TypeEtat.ENTRY) && !etat.getNom().equals(new_entry.getNom())) {
-				etat.getTypes().remove(TypeEtat.ENTRY);
-			}
-		}
 			
-		for(Etat etat : liste_nouveaux_etats_determinse ) {
-			if(!automate_deter_sync.containsEtats(etat.getNom())) {
-				automate_deter_sync.etats.add(etat);
+			for(Etat etat : liste_nouveaux_etats_determinse ) {
+				if(etat.getTypes().contains(TypeEtat.ENTRY) && !etat.getNom().equals(new_entry.getNom())) {
+					etat.getTypes().remove(TypeEtat.ENTRY);
+				}
 			}
+				
+			for(Etat etat : liste_nouveaux_etats_determinse ) {
+				if(!automate_deter_sync.containsEtats(etat.getNom())) {
+					automate_deter_sync.etats.add(etat);
+				}
+			}
+			return automate_deter_sync;
 		}
-		return automate_deter_sync;
 	}
 	
+	/*
 	private Etat merge(List<Etat> liste) {
 		Etat new_etat = new Etat(liste.get(0));	
 		//on regarde si les autres etats contiennent un type que l'etat d'indice 0 n'a pas
@@ -1100,7 +1117,41 @@ public class Automate {
 		
 		return new_etat;
 	}
+	*/
+	
+	protected Etat merge(List<Etat> liste) {
 		
+		if(liste.size()==0) {
+			return null;
+		}
+		else if(liste.size()==1) {
+			return liste.get(0);
+		}
+		
+		/*sinon il faut fusionner tous les etats*/
+		
+		Etat new_etat = liste.get(0).copieEtat(); //on veut une copie pour ne pas modifier l'etat initial
+		
+		for(int i=1; i<liste.size(); i++) {
+			Etat prochain_etat = liste.get(i).copieEtat();
+			
+			//si egaux on ne fusionne pas
+			if(prochain_etat.equals(new_etat)) {
+				continue;
+			}
+			
+			//sinon on fusionne les 2 ensemble
+			new_etat.mergeWith(prochain_etat);
+		}
+		
+		return new_etat;
+	}
+	
+	
+
+		
+	
+	
 		
 	/* Les piles en java
 		

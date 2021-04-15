@@ -2,6 +2,8 @@ package Automate_1;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,6 +28,7 @@ for (int i = 0; i < listNom.size(); i++){
 
 public class Etat{
 	
+	static Etat Operations;
 	private String nom; //le nom de l'etat 1 ou A par exemple
 	private Map<String, List<Etat>> transition; //pour une lettre donnée = key on aura la liste des etats reliés
 	private List<TypeEtat> types; //nous permet de savoir les particularites de l etat sortie, entree, etc
@@ -120,5 +123,85 @@ public class Etat{
 	@Override
 	public String toString() {
 		return this.getNom();
+	}
+	
+	protected Etat copieEtat() {
+		
+		Etat new_etat = new Etat(this);
+		return new_etat;
+		
+	}
+	
+	public boolean est_sortie() {
+		if(this.getTypes().contains(TypeEtat.EXIT)) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	public void mergeWith(Etat etat_a_fusionner) {
+		
+		if(this == etat_a_fusionner) {
+			return;
+		}
+		
+		//Operations.mergeMaps(this.transition, etat_a_fusionner.getTransi());
+		
+		Map<String, List<Etat>> dico = mergeMaps(this.transition, etat_a_fusionner.getTransi());
+		this.setTransi(dico);
+		
+		if(etat_a_fusionner.est_sortie() && !this.est_sortie()) {
+			this.types.add(TypeEtat.EXIT);
+		}
+		
+		this.nom = String.join(".", this.nom, etat_a_fusionner.getNom());
+	}
+	
+	//fonction pour fusionner 2 map
+	protected static Map<String, List<Etat>> mergeMaps(Map<String, List<Etat>> map1, Map<String, List<Etat>> map2){
+		
+		Map<String, List<Etat>> new_map = new HashMap<String, List<Etat>>();
+		
+		if(!map1.isEmpty() && !map2.isEmpty()) {
+			
+			new_map.putAll(map1);
+			
+			for(String clef : map2.keySet()) { //pour toutes les clefs de map2
+				if(!new_map.containsKey(clef)) {
+					new_map.put(clef, map2.get(clef));
+				}
+				
+				else {
+					List<Etat> Etats_new_map = new_map.get(clef);
+					List<Etat> Etats_map2 = map2.get(clef);
+					
+					List<Etat> fusion = mergeLists(Etats_new_map, Etats_map2);
+					new_map.remove(clef);
+					new_map.put(clef, fusion);
+				}
+			}
+			
+			return new_map;
+		}
+		
+		return(map1.isEmpty() && !map2.isEmpty()) ? map2 : map1;
+		//si la condition est vrai on retourne map2 sinon map1
+	}
+
+	protected static List<Etat> mergeLists(List<Etat> l1, List<Etat> l2) {
+		
+		List<Etat> etats = new ArrayList<Etat>();
+		
+		etats.addAll(l1);
+		
+		for(Etat etat : l2) {
+			if(!etats.contains(etat)) {
+				etats.add(etat);
+			}
+		}
+		
+		return etats;
 	}
 }

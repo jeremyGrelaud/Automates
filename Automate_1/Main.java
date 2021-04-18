@@ -33,6 +33,8 @@ public class Main {
 		
 		copie.est_un_automate_deterministe();
 		
+		copie = copie.minimisation();
+		
 		/*
 		System.out.println("");
 		copie.automate_complementaire();

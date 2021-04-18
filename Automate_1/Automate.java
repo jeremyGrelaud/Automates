@@ -380,154 +380,13 @@ public class Automate {
 				}
 			}
 			else {
-				 automate_deter_async = determinisation_et_completion_synchrone (automate);
+				 automate_deter_async = automate_deter_async.determinise();
 			}
 		}
 		
 		return automate_deter_async;
 	}
 	
-	public Automate determinisation_et_completion_synchrone(Automate automate) {
-		//faire une copie d�fensive
-		Automate ancien_automate = new Automate(this);
-		
-		Automate automate_deter_sync = new Automate();
-		automate_deter_sync.setAlphabet(ancien_automate.getAlphabet());
-		List<Etat> liste_entrees = new ArrayList<Etat>();
-		
-		for(Etat etat : ancien_automate.etats) {
-			if(etat.getTypes().contains(TypeEtat.ENTRY)) {
-				liste_entrees.add(etat);
-			}
-		}
-		//s'il y a plusieurs entr�es on va devoir les fusionner en une nouvelle entr�e
-		Etat new_entry = new Etat(liste_entrees.get(0));
-		
-		for(int i=1;i<liste_entrees.size();i++) {
-			new_entry.getTypes().addAll(liste_entrees.get(i).getTypes());
-			for(String clef : liste_entrees.get(i).getTransi().keySet()) { //pour toutes les clefs
-				for(int j=0;j<liste_entrees.get(i).getTransi().get(clef).size();j++){
-					new_entry.addTransi( clef, liste_entrees.get(i).getTransi().get(clef).get(j));
-				}
-			}
-			String ancien_nom1 = new_entry.getNom();
-			String ancien_nom2 = liste_entrees.get(i).getNom();
-			new_entry.setNom(new_entry.getNom() + liste_entrees.get(i).getNom());
-			//il faudrait aussi changer les noms des transis associ�es
-			
-			/***FONCTION FUSION*/
-			for(Etat etat : ancien_automate.etats) {
-				if(etat.getNom()==ancien_nom1) {
-					etat.setNom(new_entry.getNom());
-				}
-				if(etat.getNom()==ancien_nom2) {
-					etat.setNom(new_entry.getNom());
-				}
-				
-				for(String clef : etat.getTransi().keySet() ) {
-					for(int j=0;j<etat.getTransi().get(clef).size();j++){
-						if(etat.getTransi().get(clef).get(j).getNom()==ancien_nom1) {
-							etat.getTransi().get(clef).get(j).setNom(new_entry.getNom());
-						}
-						if(etat.getTransi().get(clef).get(j).getNom()==ancien_nom2) {
-							etat.getTransi().get(clef).get(j).setNom(new_entry.getNom());
-						}
-					}
-				}
-			}
-			/***FIN FUSION*/
-		}
-		
-		automate_deter_sync.getEtats().add(new_entry);
-		
-		/*Check pour la transi de notre etat si les etats existent deja***/
-		//les fusionner si besoin et rajouter les nouveaux etats
-		//continuer la boucle do while tant qu'on ajoute un nouvel etat
-		
-		/*
-		for(Etat etat : ancien_automate.etats) {
-			if(etat.getNom()!= new_entry.getNom()) {
-				automate_deter_sync.getEtats().add(etat);
-			}
-			
-		}
-		*/
-		boolean continuer = true;
-		do {
-			int ancienne_taille = automate_deter_sync.getEtats().size();
-			for(String clef : new_entry.getTransi().keySet() ) {
-				if(new_entry.getTransi().get(clef).size()>1) {
-					//fusion faudrait fusionner 2 a 2 et rappeler �a jusqu'a ce que la taille de la liste = 1
-					Etat nouvel_etat;
-					do {
-					
-						Etat etat1 = new_entry.getTransi().get(clef).get(0);
-						Etat etat2 = new_entry.getTransi().get(clef).get(1);
-						
-						nouvel_etat = fusion(etat1, etat2);
-						new_entry.getTransi().get(clef).remove(0);
-						
-					}while(new_entry.getTransi().get(clef).size()!=1);
-					
-					
-					automate_deter_sync.getEtats().add(nouvel_etat);
-					
-				}
-				else if (new_entry.getTransi().get(clef).size()==1){
-					automate_deter_sync.getEtats().add(new_entry.getTransi().get(clef).get(0));
-				}
-			}
-			
-			if(automate_deter_sync.getEtats().size()==ancienne_taille) {
-				continuer = false;
-			}
-			
-		}while(continuer);
-
-		//on a l'entr�e maintenant on va g�n�rer les nouvelles transitions
-		
-		//on regarde les etats d'arriv� qu'on a pour notre entr�e
-		//si ces etats ne sont pas dans notre liste d'�tat alors on cr�er de nouveaux �tats
-		//on r�cup ses transis avec l'ancien automate
-		//on ajoute � notre table
-		//et nouveau tour de boucle on regarde s'il y a des nouveaux �tats 
-		//etc
-		
-		
-		//compl�ter avant de renvoyer 
-		return automate_deter_sync;
-	}
-	
-	private Etat fusion(Etat state1, Etat state2) {
-		Etat new_etat = new Etat(state1);
-		
-		//on regarde si state2 contient un type que state1 n'a pas
-		for(int i=0;i<state2.getTypes().size();i++) {
-			if(!state1.getTypes().contains(state2.getTypes().get(i))) {
-				new_etat.getTypes().add(state2.getTypes().get(i));
-			}
-		}
-		
-		//on fusionne les noms
-		new_etat.setNom(state1.getNom()+state2.getNom());
-		
-		//mtn s'occupper des transitions
-		
-		for(String clef : new_etat.getTransi().keySet() ) {
-			if(state2.getTransi().get(clef)!=null) {
-				for(int i=0;i<state2.getTransi().get(clef).size();i++) {
-					new_etat.getTransi().get(clef).add(state2.getTransi().get(clef).get(i));
-				}
-			}
-		}
-		
-		//mtn il faut changer les noms dans la table de transi
-		// tous les etat1.getNom() et etat2.getNom()
-		//doivent devenir le nouveau nom new_etat.getNom()
-		
-		
-		return new_etat;
-	}
 	/*** COMPLETION*/
 	public boolean est_un_automate_complet() {
 		Automate automate = new Automate(this);
@@ -586,21 +445,6 @@ public class Automate {
 		}
 		//return automate;
 	}
-	
-	
-	/***MINIMISATION*/
-	//doit afficher si c'�tait d�j� minimal
-	//on minimise un automate synchrone, d�terministe, complet
-	
-	/***RECONAISSANCE DES MOTS*/
-	/*
-	public void lire_mot(String mot) {
-		while(mot.length()!=0) {
-			reconnaitre(mot,this);
-			lire_mot(mot);
-		}
-	}
-	*/
 	
 	
 	/*RECONAISSANCE POUR NON DETERMINISTE*/
@@ -814,60 +658,6 @@ public class Automate {
 		sc.close();
 	}
 
-	
-	/*
-	public boolean reconnaitre(String mot, Automate automate) {
-		for(Etat etat : this.etats) {
-			if(etat.getTypes().contains(TypeEtat.ENTRY)) {
-				//on commence � essayer de lire
-				int i=0;
-				boolean continuer = true;
-				Etat new_entry = new Etat(etat);
-				while(continuer && i<mot.length()) {
-					if(new_entry.getTransi().get(String.valueOf(mot.charAt(i)))!=null) {
-						for(int j=0; j<new_entry.getTransi().get(String.valueOf(mot.charAt(i))).size();j++) {
-							reconnaitre(String.valueOf(mot.substring(1)), new_entry.getTransi().get(String.valueOf(mot.charAt(i))).get(i));
-						}
-						//new_entry = new_entry.getTransi().get(String.valueOf(mot.charAt(i)));
-						//il faudrait faire une fc r�cursive qui appel avec tous les �tats terminaux de la liste
-						//puis quand �a arrive � la fin du mot faut regarder si c'est un �tat de sortie
-						i++;
-					}
-					else {
-						continuer = false;
-					}
-				}
-				if(continuer==true && new_entry.getTypes().contains(TypeEtat.EXIT)) {
-					return true;
-				}
-				
-			}
-		} 
-		//non reconnu
-		return false; 
-	}
-	*/
-	
-	
-
-	/* ca marche pas
-	private void reconnaitre(String mot, Etat new_entry) {
-		int i=0;
-		boolean continuer = true;
-		while(continuer && i<mot.length()) {
-			if(new_entry.getTransi().get(String.valueOf(mot.charAt(i)))!=null) {
-				for(int j=0; j<new_entry.getTransi().get(String.valueOf(mot.charAt(i))).size();j++) {
-					reconnaitre(String.valueOf(mot.substring(1)), new_entry.getTransi().get(String.valueOf(mot.charAt(i))).get(i));
-				}
-				i++;
-			}
-			else {
-				continuer = false;
-			}
-		}
-		
-	}
-	*/
 	/***LANGAGE COMPLEMENTAIRE*/
 	/*
 	public void construction_complementaire_reconaissance(Automate automate) {
@@ -946,49 +736,6 @@ public class Automate {
 			List<Etat> liste_entrees = this.get_toutes_entree();
 		
 			Etat new_entry = merge(liste_entrees);
-			
-			/*
-			//s'il y a plusieurs entrees on va devoir les fusionner en une nouvelle entree
-			Etat new_entry = new Etat(liste_entrees.get(0));
-			
-			
-			for(int i=1;i<liste_entrees.size();i++) {
-				new_entry.getTypes().addAll(liste_entrees.get(i).getTypes());
-				for(String clef : liste_entrees.get(i).getTransi().keySet()) { //pour toutes les clefs
-					for(int j=0;j<liste_entrees.get(i).getTransi().get(clef).size();j++){
-						new_entry.addTransi( clef, liste_entrees.get(i).getTransi().get(clef).get(j));
-						//automate_deter_sync.nbTransitions = automate_deter_sync.getNbTransitions()+1;
-					}
-				}
-				String ancien_nom1 = new_entry.getNom();
-				String ancien_nom2 = liste_entrees.get(i).getNom();
-				new_entry.setNom(ancien_nom1 + "."+ ancien_nom2);
-				
-				//il faudrait aussi changer les noms des transis associees
-
-				
-				/*
-				for(Etat etat : ancien_automate.etats) {
-					if(etat.getNom().equals(ancien_nom1) || etat.getNom().equals(ancien_nom2) ) {
-						etat.setNom(new_entry.getNom());
-					}
-					
-					/*
-					for(String clef : etat.getTransi().keySet()) {
-						for(int j=0; j<etat.getTransi().get(clef).size();j++) {
-							if(etat.getTransi().get(clef).get(j).getNom().equals(ancien_nom1) || etat.getTransi().get(clef).get(j).getNom().equals(ancien_nom1) ) {
-								etat.getTransi().get(clef).get(j).setNom(new_entry.getNom());
-							}
-						}
-					}
-					*/
-						
-				//}
-			
-			//}
-			
-			
-			
 		
 			/*il faut supprimer les etats en double dans ancien automate*/
 			
@@ -1005,15 +752,16 @@ public class Automate {
 			while(!pile.empty()){
 				Etat etat_courant = pile.pop();
 				
-				/*
-				System.out.println(!liste_nouveaux_etats_determinse.contains(etat_courant));
-				System.out.println("etat courant : " + etat_courant);
-				System.out.println("liste " + liste_nouveaux_etats_determinse );
-				*/
 				//il arrive pas à savoir que les etats sont deja contenus dans la liste car ils on pas la même référence
 				
-				if(liste_nouveaux_etats_determinse.stream().noneMatch(etat -> etat.getNom().equals(etat_courant.getNom()))) {
-					
+				boolean contenir = false;
+				for(Etat etat : liste_nouveaux_etats_determinse) {
+					if(etat.getNom().equals(etat_courant.getNom())) {
+						contenir = true;
+					}
+				}
+				if(!contenir) {
+				
 					/*on regarde les transis*/
 					for(String clef : etat_courant.getTransi().keySet()) {
 		
@@ -1043,9 +791,6 @@ public class Automate {
 					liste_nouveaux_etats_determinse.add(etat_courant);
 				}
 			}
-
-			 
-		
 			
 			for(Etat etat : liste_nouveaux_etats_determinse ) {
 				if(etat.getTypes().contains(TypeEtat.ENTRY) && !etat.getNom().equals(new_entry.getNom())) {
@@ -1061,63 +806,6 @@ public class Automate {
 			return automate_deter_sync;
 		}
 	}
-	
-	/*
-	private Etat merge(List<Etat> liste) {
-		Etat new_etat = new Etat(liste.get(0));	
-		//on regarde si les autres etats contiennent un type que l'etat d'indice 0 n'a pas
-		for(int j=1; j<liste.size();j++) {
-			for(int i=0; i<liste.get(j).getTypes().size();i++) {
-				if(!new_etat.getTypes().contains(liste.get(j).getTypes().get(i))) {
-					new_etat.getTypes().add(liste.get(j).getTypes().get(i));
-				}
-			}
-		}
-	
-		List<String> liste_anciens_noms = new ArrayList<String>();
-		liste_anciens_noms.add(new_etat.getNom());
-		//maintenant on fusionne les noms
-		for(int i=1; i<liste.size();i++) {
-			liste_anciens_noms.add(liste.get(i).getNom());
-			new_etat.setNom(new_etat.getNom() +"."+ liste.get(i).getNom());
-		}
-		
-		//il va falloir remplacer tous les anciens noms par le nouveau
-	
-		
-		//mtn s'occupper des transitions
-		for(Etat etat : liste) {
-			for(String clef : new_etat.getTransi().keySet() ) {
-
-				if(etat.getTransi().get(clef)!=null) {
-					for(int i=0;i<etat.getTransi().get(clef).size();i++) {
-						if(!new_etat.getTransi().get(clef).contains(etat.getTransi().get(clef).get(i))) {
-							new_etat.getTransi().get(clef).add(etat.getTransi().get(clef).get(i));
-						}
-						
-					}
-				}
-			}
-		}
-		
-		//mtn il faut changer les noms dans la table de transi
-		// tous les etats dont le nom appartient à la liste des anciens noms
-		//doivent avoir comme nouveau nom new_etat.getNom()
-		
-		for(Etat etat : this.etats) {
-			for(String clef : etat.getTransi().keySet() ) {
-				for(Etat etat_destination : etat.getTransi().get(clef)) {
-					if(liste_anciens_noms.contains(etat_destination.getNom())) {
-						etat_destination.setNom(new_etat.getNom());
-					}
-				}
-			}
-		}
-		
-		
-		return new_etat;
-	}
-	*/
 	
 	protected Etat merge(List<Etat> liste) {
 		
@@ -1146,22 +834,134 @@ public class Automate {
 		
 		return new_etat;
 	}
-	
-	
 
-		
-	
-	
-		
-	/* Les piles en java
-		
-		Stack<Etat> pile = new Stack<Etat>();
+	/***MINIMISATION*/
+	//doit afficher si c'etait deja minimal
+	//on minimise un automate synchrone, deterministe, complet
 
-		pile.push(init);
-		pile.pop();
-
-		while(!pile.empty()){
-			
+	public Automate minimisation() {
+		Automate minimise = new Automate();
+		Automate automate_a_minimiser = new Automate(this);
+		
+		if(!(automate_a_minimiser.est_un_automate_deterministe() && automate_a_minimiser.est_un_automate_complet())) {
+			automate_a_minimiser = automate_a_minimiser.determinise();
+			automate_a_minimiser.completion();
+		}
+		
+		minimise = automate_a_minimiser.minimiser();
+		System.out.println("Voici l'automate minimal : ");
+		minimise.afficher_automate();
+		return minimise;
 	}
-	*/
+	
+	//EN construction x) 
+	private Automate minimiser() {
+		Automate automate_a_minimiser = new Automate(this);
+		Automate minimise = new Automate();
+		
+		minimise.setAlphabet(automate_a_minimiser.getAlphabet());
+		//Algo
+		//on commence par intialiser 2 liste : les étatas finaux et les non finaux
+		
+		//a chaque etape on a une liste de liste d'etats
+		//pour avoir l'etape ssuivante on regarde si les listes interne peuvent être séparées
+		
+		List<List<Etat>> Partition = new ArrayList<List<Etat>>();
+		List<Etat> finaux = new ArrayList<Etat>();
+		List<Etat> non_finaux = new ArrayList<Etat>();
+		
+		//initialisation
+		
+		for(Etat etat : automate_a_minimiser.etats ){
+			if(etat.getTypes().contains(TypeEtat.EXIT)) {
+				finaux.add(etat);
+			}
+			else {
+				non_finaux.add(etat);
+			}	
+		}
+		
+		Partition.add(non_finaux);
+		Partition.add(finaux);
+		
+		List<List<Etat>> New_Partition = new ArrayList<List<Etat>>();
+		
+		do {
+			
+			//pour chaque sous liste de la partion courante on cherche les 
+			//etats pouvant être séparés
+			
+			for(List<Etat> liste : Partition) {
+				for(Etat etat : liste) {
+					for(int i=0; i<liste.size();i++) {
+						//on compare cet etat avec tous les autres
+						if(etat!=liste.get(i)) {
+							
+							boolean meme_comportement = true;
+							for(String clef : etat.getTransi().keySet()) {
+								
+								Etat temp1 = etat.getTransi().get(clef).get(0);
+								Etat temp2 = liste.get(i).getTransi().get(clef).get(0);
+								
+								if(!temp1.equals(temp2)) {
+									meme_comportement = false;
+								}
+							}
+							//si meme comportement entre les 2 etats pour toutes les clef
+							
+							List<Etat> new_list = new ArrayList<Etat>();
+							
+							if(meme_comportement == true) {
+								new_list.add(etat);
+								new_list.add(liste.get(i));
+								
+								New_Partition.add(new_list);
+							}
+							else {
+								List<Etat> new_list2 = new ArrayList<Etat>();
+								
+								new_list.add(etat);
+								new_list2.add(liste.get(i));
+								
+								New_Partition.add(new_list);
+								New_Partition.add(new_list2);
+							}
+							
+							
+						}
+					}
+					
+					
+				}
+			}
+			
+		System.out.println(Partition);
+		System.out.println(New_Partition);
+		Partition.clear();
+		Partition.addAll(New_Partition);
+		New_Partition.clear();
+		
+		}while(!Partition.equals(New_Partition));
+		
+		
+		
+		//après on regarde dans New_partition on va fusionner les etats des sous_liste entre eux
+		//enfin on ajoute tous les etats de la grande liste a l'automate
+		
+		for(List<Etat> liste : New_Partition) {
+			if(liste.size()>1) {
+				//on fusionne tous les etats entre eux
+				minimise.etats.add(merge(liste));
+			}
+			else {
+				minimise.etats.add(liste.get(0));
+			}
+		}
+		
+		
+		return minimise;
+	}
 }
+
+
+

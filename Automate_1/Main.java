@@ -27,13 +27,28 @@ public class Main {
 		copie.est_un_automate_deterministe();
 		copie.est_un_automate_complet();
 		*/
+		
+		/*
 		System.out.println("");
 		copie = copie.determinise();
 		copie.afficher_automate();
 		
 		copie.est_un_automate_deterministe();
 		
-		copie = copie.minimisation();
+		copie = copie.minimisation();*/
+		
+		
+		copie.programme();
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		
 		/*
 		System.out.println("");

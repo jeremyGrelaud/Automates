@@ -280,7 +280,6 @@ public class Automate {
 	}
 	
 	
-	/*** DETERMINISATION*/
 	public boolean est_un_automate_asynchrone() {
 		
 		Automate automate = new Automate(this);
@@ -333,58 +332,6 @@ public class Automate {
 		}
 		System.out.println("\nL'automate est deterministe");
 		return true;
-	}
-	
-	
-	/*
-	public Automate determinisation(Automate automate) {
-		Automate automate_deter_async = new Automate();
-		
-		if(est_un_automate_asynchrone(automate)) {
-			 automate_deter_async = determinisation_et_completion_asynchrone(automate);
-		}
-		else {
-			if(est_un_automate_deterministe(automate)) {
-				if(est_un_automate_complet(automate)) {
-					 automate_deter_async = new Automate(automate);
-				}
-				else {
-					 automate_deter_async = completion(automate);
-				}
-			}
-			else {
-				 automate_deter_async = determinisation_et_completion_synchrone (automate);
-			}
-		}
-		
-		afficher_automate_deterministe_complet(automate_deter_async);
-	}
-	*/
-	
-	public Automate determinisation(Automate automate) {
-		Automate automate_deter_async = new Automate(automate);
-		
-		
-		if(est_un_automate_asynchrone()) {
-			System.out.println("deter asynchrone pas encore faite");
-			return null;
-		}
-		else {
-			if(est_un_automate_deterministe()) {
-				if(est_un_automate_complet()) {
-					 automate_deter_async = new Automate(automate);
-				}
-				else {
-					// automate_deter_async = completion();
-					 automate_deter_async.completion();
-				}
-			}
-			else {
-				 automate_deter_async = automate_deter_async.determinise();
-			}
-		}
-		
-		return automate_deter_async;
 	}
 	
 	/*** COMPLETION*/
@@ -541,7 +488,6 @@ public class Automate {
 }
 	/*FIN RECONAISSANCE POUR NON DETERMINISTE*/
 		
-	
 	public boolean reconnaitre_mot_automate_determinsite ( String mot ) {
 		
 		if(!this.est_un_automate_deterministe()) {
@@ -716,6 +662,31 @@ public class Automate {
 	
 	
 	/*DETERMINISATION*/
+	public Automate determinisation(Automate automate) {
+		Automate automate_deter_async = new Automate(automate);
+		
+		
+		if(est_un_automate_asynchrone()) {
+			System.out.println("deter asynchrone pas encore faite");
+			return null;
+		}
+		else {
+			if(est_un_automate_deterministe()) {
+				if(est_un_automate_complet()) {
+					 automate_deter_async = new Automate(automate);
+				}
+				else {
+					// automate_deter_async = completion();
+					 automate_deter_async.completion();
+				}
+			}
+			else {
+				 automate_deter_async = automate_deter_async.determinise();
+			}
+		}
+		
+		return automate_deter_async;
+	}
 	/**
 	 * Cree l'automate determinise
 	 * @return l'automate determinise
@@ -960,6 +931,80 @@ public class Automate {
 		
 		
 		return minimise;
+	}
+	
+	
+	
+	
+	public void programme() {
+		Automate automate_depart = new Automate(this);
+		Automate automate_a_modifier = new Automate(this);
+		
+		
+		Scanner sc = new Scanner(System.in);
+		String mot = "";
+		
+		System.out.println("Pour arrêter l'execution taper EXIT");
+		do {
+			System.out.println("Veuillez taper un chiffre :");
+			System.out.println("1 : standardisation ");
+			System.out.println("2 : completion ");
+			System.out.println("3 : automate complementaire ");
+			System.out.println("4 : reconaissance de mots sur l'automate");
+			System.out.println("5 : determinisation synchrone");
+			System.out.println("6 : minimisation synchrone");
+			System.out.println("7 : revenir a l'automate de depart");
+			mot = sc.nextLine();
+			
+			while(!( (mot.equals("1")) || (mot.equals("2")) || (mot.equals("3")) || (mot.equals("4")) || (mot.equals("5")) || (mot.equals("6")) || (mot.equals("7")) || (mot.equals("EXIT")) )) {
+				System.out.println("Veuillez faire un choix valide ");
+				System.out.println("Veuillez taper un chiffre :");
+				System.out.println("1 : standardisation ");
+				System.out.println("2 : completion ");
+				System.out.println("3 : automate complementaire ");
+				System.out.println("4 : reconaissance de mots sur l'automate");
+				System.out.println("5 : determinisation synchrone");
+				System.out.println("6 : minimisation synchrone");
+				System.out.println("7 : revenir a l'automate de depart");
+				mot = sc.nextLine();
+			}
+			
+			if(mot.equals("1")){
+				automate_a_modifier.standardisation();
+				System.out.println("Standardisation effectuée : ");
+				automate_a_modifier.afficher_automate();
+			}
+			if(mot.equals("2")){
+				automate_a_modifier.completion();
+				System.out.println("Completion effectuée : ");
+				automate_a_modifier.afficher_automate();			
+			}
+			if(mot.equals("3")){
+				automate_a_modifier.automate_complementaire();
+				System.out.println("Automate complementaire : ");
+				automate_a_modifier.afficher_automate();	
+			}
+			if(mot.equals("4")){
+				automate_a_modifier.reconnaitre_plusieurs_mot();	
+			}
+			if(mot.equals("5")){
+				automate_a_modifier = automate_a_modifier.determinisation(automate_a_modifier);
+				System.out.println("Determinisation effectuée : ");
+				automate_a_modifier.afficher_automate();	
+			}
+			if(mot.equals("6")){
+				System.out.println("Indisponible pour le moment");
+			}
+			if(mot.equals("7")){
+				automate_a_modifier = automate_depart;
+				automate_a_modifier.afficher_automate();
+			}
+			
+		}while(!mot.equals("EXIT"));
+		//fin
+		System.out.println("Fin du programme");
+		sc.close();
+		
 	}
 }
 

@@ -189,7 +189,13 @@ public class Automate {
 
 		 for (Etat etat : this.etats) {
 		    for(String clef : etat.getTransi().keySet()) { //string avec tt les clefs
-		    	System.out.println(etat.getNom()+" " +clef+  " " +Arrays.toString(etat.getTransi().get(clef).toArray()));
+		    	if(clef.equals("")) {
+		    		System.out.println(etat.getNom()+" * " +Arrays.toString(etat.getTransi().get(clef).toArray()));
+		    	}
+		    	else {
+		    		System.out.println(etat.getNom()+" " +clef+  " " +Arrays.toString(etat.getTransi().get(clef).toArray()));
+		    	}
+		    	
 		    }
 		    		
 		    
@@ -805,7 +811,106 @@ public class Automate {
 		
 		return new_etat;
 	}
+	
+	/***EPSILON*/
+	//on va enlever tt les transis epsilon et les remplacer
+	public Automate elimination_epsilon() {
+		Automate automate = new Automate(this);
+		
+		if(!automate.est_un_automate_asynchrone()) {
+			return automate;
+		}
+		else {
+			Automate nouvel_automate_synchrone = new Automate();
+			nouvel_automate_synchrone.setAlphabet(automate.getAlphabet());
+			List<Etat> liste_nouveaux_etats = new ArrayList<Etat>();
+			
+			
+			for(Etat etat : automate.getEtats()) {
+					//on créer un nouvel etat en mergeant la liste des etats destinations possibles
+					List<Etat> liste = new ArrayList<Etat>();
+				
+					
+					//ex cloture epsilon de 1 : ensemble des etats ou on peut aller en partant de 1 et en passant par des transi espilon
+					
+					List<Etat> liste2 = cloture(etat);
+					liste.addAll(liste2);
+					Etat new_etat = merge(liste);
+					new_etat.setNom(etat.getNom());
+				
+					liste_nouveaux_etats.add(new_etat);
+					
+			}
+				
+			
+			
+			for(Etat etat : liste_nouveaux_etats) {
+				etat.getTransi().remove("");
+			
+			}
+			
+			for(Etat etat : liste_nouveaux_etats) {
+				for(String clef : etat.getTransi().keySet()) {
+					nouvel_automate_synchrone.nbTransitions = nouvel_automate_synchrone.getNbTransitions()+1;
+				}
+				nouvel_automate_synchrone.etats.add(etat);
+				
+			}
+			
+		
+			
+			return nouvel_automate_synchrone;
+		}
+	
+	}
+	
+	
+	//on veut retourner une liste de tous les etats atteignables en passant par des transi epsilon
+	private List<Etat> cloture(Etat etat) {
+		List<Etat> liste2 = new ArrayList<Etat>();
+		liste2.add(etat);
+		Stack<Etat> pile = new Stack<Etat>();
+		pile.push(etat);
+		
+		while(!pile.isEmpty()) {
+			etat = pile.pop();
+			if(etat.getTransi().get("")!=null) {
+				liste2.addAll(etat.getTransi().get(""));
+				for(Etat etat_liste : etat.getTransi().get("")) {
+					pile.push(etat_liste);
+				}
+				
+			}
+				
+		}
+		
+		return liste2;
+	}
+	
+	public Automate determinisation_et_completion_asynchrone() {
+		Automate automate = new Automate(this);
+		Automate nouvel_automate = new Automate();
+		
+		if(automate.est_un_automate_asynchrone()) {
+			nouvel_automate = automate.elimination_epsilon();
+			
+			nouvel_automate = nouvel_automate.determinise();
+			nouvel_automate.completion();
+			
+			return nouvel_automate;
+		}
+		else {
+			nouvel_automate = automate.determinise();
+			nouvel_automate.completion();
+			
+			return nouvel_automate;
+		}
+		
+	}
 
+
+
+	
 	/***MINIMISATION*/
 	//doit afficher si c'etait deja minimal
 	//on minimise un automate synchrone, deterministe, complet

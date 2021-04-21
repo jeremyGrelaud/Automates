@@ -28,7 +28,7 @@ for (int i = 0; i < listNom.size(); i++){
 
 public class Etat{
 	
-	static Etat Operations;
+	
 	private String nom; //le nom de l'etat 1 ou A par exemple
 	private Map<String, List<Etat>> transition; //pour une lettre donnée = key on aura la liste des etats reliés
 	private List<TypeEtat> types; //nous permet de savoir les particularites de l etat sortie, entree, etc

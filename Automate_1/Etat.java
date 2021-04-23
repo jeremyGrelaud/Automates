@@ -149,6 +149,7 @@ public class Etat{
 		
 		//Operations.mergeMaps(this.transition, etat_a_fusionner.getTransi());
 		
+		
 		Map<String, List<Etat>> dico = mergeMaps(this.transition, etat_a_fusionner.getTransi());
 		this.setTransi(dico);
 		
@@ -156,7 +157,19 @@ public class Etat{
 			this.types.add(TypeEtat.EXIT);
 		}
 		
+		String ancien_nom = this.nom;
+		
 		this.nom = String.join(".", this.nom, etat_a_fusionner.getNom());
+		
+			/*
+			for(String clef : this.getTransi().keySet() ) {
+				for(Etat etat : this.getTransi().get(clef)) {
+					if((etat.getNom().equals(ancien_nom)) || (etat.getNom().equals(etat_a_fusionner.getNom()))) {
+						etat.setNom(this.nom);
+					}
+				}
+			}
+			*/
 	}
 	
 	//fonction pour fusionner 2 map
@@ -169,24 +182,31 @@ public class Etat{
 			new_map.putAll(map1);
 			
 			for(String clef : map2.keySet()) { //pour toutes les clefs de map2
-				if(!new_map.containsKey(clef)) {
-					new_map.put(clef, map2.get(clef));
-				}
 				
-				else {
-					List<Etat> Etats_new_map = new_map.get(clef);
-					List<Etat> Etats_map2 = map2.get(clef);
+					if(!new_map.containsKey(clef)) {
+						new_map.put(clef, map2.get(clef));
+					}
 					
-					List<Etat> fusion = mergeLists(Etats_new_map, Etats_map2);
-					new_map.remove(clef);
-					new_map.put(clef, fusion);
-				}
+					else {
+						List<Etat> Etats_new_map = new_map.get(clef);
+						List<Etat> Etats_map2 = map2.get(clef);
+						
+						List<Etat> fusion = mergeLists(Etats_new_map, Etats_map2);
+						new_map.remove(clef);
+						new_map.put(clef, fusion);
+					}
+				
 			}
 			
 			return new_map;
 		}
 		
-		return(map1.isEmpty() && !map2.isEmpty()) ? map2 : map1;
+		if(map1.isEmpty() && !map2.isEmpty()) {
+			return map2;
+		}
+		else {
+			return map1;
+		}
 		//si la condition est vrai on retourne map2 sinon map1
 	}
 
@@ -204,4 +224,20 @@ public class Etat{
 		
 		return etats;
 	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if(this == o) {
+			return true;
+		}
+		if(o == null || getClass() != o.getClass()) {
+			return false;
+		}
+		
+		Etat etat = (Etat) o;
+		return this.getNom().equals(etat.getNom());
+		
+		
+	}
+
 }

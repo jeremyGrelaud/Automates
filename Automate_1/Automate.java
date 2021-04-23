@@ -2,8 +2,10 @@ package Automate_1;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 import java.util.Stack;
 
@@ -835,7 +837,7 @@ public class Automate {
 					
 					List<Etat> liste2 = cloture(etat);
 					liste.addAll(liste2);
-					Etat new_etat = merge(liste);
+					Etat new_etat = new Etat(merge(liste));
 					new_etat.setNom(etat.getNom());
 				
 					liste_nouveaux_etats.add(new_etat);
@@ -845,12 +847,42 @@ public class Automate {
 			
 			
 			for(Etat etat : liste_nouveaux_etats) {
+				
+				
+				/*for(String clef : etat.getTransi().keySet()) {
+					for(Etat etat2 : etat.getTransi().get(clef)) {
+						Map<String, List<Etat>> map = new HashMap<String, List<Etat>>();
+						for(String clef2 : etat2.getTransi().keySet()) {
+							
+							List<Etat> new_transi = new ArrayList<Etat>();
+							String nom = etat2.getNom();
+							//on veut relier les transi de l'etat2 à etat correspondant
+							
+							for(int i=0;i<liste_nouveaux_etats.size();i++ ) {
+								if(liste_nouveaux_etats.get(i).getNom().equals(nom)) {
+									if((liste_nouveaux_etats.get(i).getTransi().get(clef)!=null) ){
+										new_transi = (liste_nouveaux_etats.get(i).getTransi().get(clef));
+									}
+								}
+							}
+							
+							map.put(clef, new_transi);
+							
+							
+						}
+						etat2.setTransi(map);
+					}
+				}*/
 				etat.getTransi().remove("");
-			
+				
 			}
+			
+			
+			
 			
 			for(Etat etat : liste_nouveaux_etats) {
 				for(String clef : etat.getTransi().keySet()) {
+					
 					nouvel_automate_synchrone.nbTransitions = nouvel_automate_synchrone.getNbTransitions()+1;
 				}
 				nouvel_automate_synchrone.etats.add(etat);
@@ -880,8 +912,9 @@ public class Automate {
 					pile.push(etat_liste);
 				}
 				
-			}
 				
+			}
+	
 		}
 		
 		return liste2;
@@ -930,7 +963,267 @@ public class Automate {
 		return minimise;
 	}
 	
-	//EN construction x) 
+	//WORK IN PROGRESS
+	private Automate minimiser() {
+		boolean change = true;
+		Automate automate_min = new Automate();
+		Automate automate = new Automate(this);
+		
+		//initialisation 
+		int taille = automate.getEtats().size();
+		int pi_num = 2;
+		int[] pi_tab = new int[taille];
+		for(int i=0; i<automate.getEtats().size();i++) {
+			if(automate.getEtats().get(i).getTypes().contains(TypeEtat.EXIT)) {
+				pi_tab[i] = 2;
+			}
+			else {
+				pi_tab[i] = 1;
+			}	
+		}
+		
+		for(int i=0; i<automate.getEtats().size();i++) {
+			System.out.println(pi_tab[i]);
+		}
+		
+	
+		
+		do {
+			//construction signature
+			int nbr_colonnes =automate.getAlphabet().getDictionary().size()+2;
+			int[][] signature = new int[automate.getEtats().size()][nbr_colonnes];
+			int[][] ancien_signature = new int[automate.getEtats().size()][nbr_colonnes];
+			for(int cmpt=0; cmpt<automate.getEtats().size();cmpt++) {
+				signature[cmpt][0] = cmpt;
+			}
+			
+			//int j =1;
+			//while(j<nbr_colonnes) {
+				for(int i=0; i<automate.getEtats().size();i++) {
+					
+					int j=1;
+					//on regarde à quel groupe de la partition l'etat lui meme appartient
+					
+					
+					signature[i][j] = pi_tab[i];
+					j++;
+					
+					for(String clef : automate.getEtats().get(i).getTransi().keySet()) {
+						Etat destination = automate.getEtats().get(i).getTransi().get(clef).get(0);
+						
+						//on regarde à quel groupe de la partition destination appartient
+						int pos=0;
+						for(int k=0;k<automate.getEtats().size();k++) {
+							if(automate.getEtats().get(k).getNom().equals(destination.getNom())) {
+								pos=k;
+							}
+						}
+						
+						
+						
+						//if(j<nbr_colonnes) {
+							//signature[i][j] = pi_tab[pos];
+							signature[i][j] = pi_tab[pos];
+						//}
+							j++;
+						
+					}
+					
+					
+				}
+				
+			
+			System.out.println("SIGNATURE :");
+			for(int i=0; i<taille;i++) {
+				for(int z=0;z<nbr_colonnes;z++) {
+					System.out.print(signature[i][z]);
+				}
+				System.out.println("");
+			}
+			System.out.println("");
+				
+			
+			for(int i=0; i<taille;i++) {
+				for(int z=0;z<nbr_colonnes;z++) {
+					ancien_signature[i][z] =signature[i][z];
+				}
+			}
+			
+			//Tri radix
+			int[] tab_trie = new int[taille];
+			
+			for(int jj=nbr_colonnes-1;jj>0;jj--) {
+				boolean trie=false;
+				int compteur =0;
+				do {
+					int pos_min=compteur;
+					for(int ii=compteur;ii<automate.getEtats().size();ii++) {
+						//faut ordonner dans l'odre croissant les lignes en fc des elements de la colonne jj actuelle
+						if(signature[ii][jj] < signature[pos_min][jj]) {
+							pos_min=ii;
+						}
+					}
+					//on decale toutes les lignes on met le plus petit devant
+					
+					
+						// Decalage
+						int[] tmp = signature[pos_min]; 
+						
+						for(int z=pos_min; z >compteur; z--) {
+							signature[z] = signature[z-1];
+						}
+						signature[compteur] = tmp; 
+						compteur++;
+						//le plus petit est maintenant au début
+						
+						
+						System.out.println("SIGNATURE :");
+						for(int i=0; i<taille;i++) {
+							for(int z=0;z<nbr_colonnes;z++) {
+								System.out.print(signature[i][z]);
+							}
+							System.out.println("");
+						}
+						System.out.println("");
+					
+					
+					if(compteur == automate.getEtats().size()) {
+						trie=true;
+					}
+					
+				}while(trie==false);
+				
+			}
+			
+			//une fois le tri finis
+			for(int i=0; i<taille;i++) {
+				tab_trie[i] = signature[i][0];
+			}
+			
+			
+			for(int i=0; i<pi_tab.length;i++) {
+				System.out.println(tab_trie[i]);
+			}
+			System.out.println("");
+			
+			/***VERiF signature*/	
+			System.out.println("Matrice signature :");
+			for(int i=0; i<taille;i++) {
+				for(int z=0;z<nbr_colonnes;z++) {
+					System.out.print(signature[i][z]);
+				}
+				System.out.println("");
+			}
+			
+			System.out.println("Ancienne signature :");
+			for(int i=0; i<taille;i++) {
+				for(int z=0;z<nbr_colonnes;z++) {
+					System.out.print(ancien_signature[i][z]);
+				}
+				System.out.println("");
+			}
+			
+			
+			
+			
+			//renumerotation
+			//la signature est trie dans l'ordre croissant
+			int num=1;
+			//nouvelle partition
+			//a quel etat correspondait tab_trie[0] et ça donne un int
+			pi_tab[tab_trie[0]]=num;
+			for(int l=1; l<taille;l++) {
+				//comparaison de signature
+				//System.out.println((!signature_egales(signature[tab_trie[l]], signature[tab_trie[l-1]])) );
+				if(!signature_egales(ancien_signature[tab_trie[l]], ancien_signature[tab_trie[l-1]])) {
+					num = num+1;
+				}
+				
+				pi_tab[tab_trie[l]]=num;
+				
+			}
+			if(pi_num!=num) {
+				change=true;
+				pi_num=num;
+			}
+			else {
+				change=false;
+			}
+			
+		}while(change==true);
+		
+		
+		for(int i=0; i<pi_tab.length;i++) {
+			System.out.println(pi_tab[i]);
+		}
+		
+		
+		
+		List<Etat> deja_traite = new ArrayList<Etat>();
+		//on a donc un tableau pi_tab dans lequel la position correspond a la pos de l'etat dans la liste de l'automate
+		//et dans les cases est indiqué leur appartenance a un grp
+		//si 2 etats sont dans un meme grp il faut les fusionner car ils ont le meme comportement
+		
+		for(int i=0; i<automate.getEtats().size(); i++) {
+			int grp_etat_courant = pi_tab[i];
+			List<Etat> etats_meme_grp = new ArrayList<Etat>();
+			
+			if(!deja_traite.contains(automate.getEtats().get(i))) { 
+				etats_meme_grp.add(automate.getEtats().get(i));
+				deja_traite.add(automate.getEtats().get(i));
+				
+				
+				for(int j=0;j<automate.getEtats().size();j++) {
+					if(j!=i) {
+						if(pi_tab[j]==grp_etat_courant) {
+							if(!deja_traite.contains(automate.getEtats().get(j))) {
+								etats_meme_grp.add(automate.getEtats().get(j));
+								deja_traite.add(automate.getEtats().get(j));
+							}
+							
+						}
+					}
+				}
+				
+				Etat new_etat = merge(etats_meme_grp);
+				automate_min.getEtats().add(new_etat);
+				//deja_traite.add(automate.getEtats().get(i));
+			}
+			
+		}
+		
+		for(Etat etat : automate_min.getEtats()) {
+			for(String clef : etat.getTransi().keySet()) {
+				automate_min.setNbTransitions(automate_min.getNbTransitions()+1);
+			}
+		}
+		
+		
+		
+		
+		automate_min.setAlphabet(automate.getAlphabet());
+		
+		
+		return automate_min;
+		
+	}
+	
+	private boolean signature_egales(int[] sign1, int[] sign2) {
+		
+	
+		for(int i=1; i<sign1.length;i++) {
+			/*
+			System.out.println("sign1 :" +sign1[i]);
+			System.out.println("sign2 :" +sign2[i]);*/
+			if(sign1[i]!=sign2[i]) {
+				return false;
+			}
+		}
+		
+		return true;
+	}
+	
+	/*
 	private Automate minimiser() {
 		Automate automate_a_minimiser = new Automate(this);
 		Automate minimise = new Automate();
@@ -1037,7 +1330,7 @@ public class Automate {
 		
 		return minimise;
 	}
-	
+	*/
 	
 	
 	

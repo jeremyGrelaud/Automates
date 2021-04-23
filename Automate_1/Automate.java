@@ -1012,7 +1012,7 @@ public class Automate {
 			//construction signature
 			int nbr_colonnes =automate.getAlphabet().getDictionary().size()+2;
 			int[][] signature = new int[automate.getEtats().size()][nbr_colonnes];
-			int[][] ancien_signature = new int[automate.getEtats().size()][nbr_colonnes];
+			//int[][] ancien_signature = new int[automate.getEtats().size()][nbr_colonnes];
 			for(int cmpt=0; cmpt<automate.getEtats().size();cmpt++) {
 				signature[cmpt][0] = cmpt;
 			}
@@ -1062,12 +1062,12 @@ public class Automate {
 			}
 			System.out.println("");*/
 				
-			
+			/*
 			for(int i=0; i<taille;i++) {
 				for(int z=0;z<nbr_colonnes;z++) {
 					ancien_signature[i][z] =signature[i][z];
 				}
-			}
+			}*/
 			
 			//Tri radix
 			int[] tab_trie = new int[taille];
@@ -1147,7 +1147,7 @@ public class Automate {
 			
 			
 			
-			
+			/*
 			//renumerotation
 			//la signature est trie dans l'ordre croissant
 			int num=1;
@@ -1158,6 +1158,31 @@ public class Automate {
 				//comparaison de signature
 				//System.out.println((!signature_egales(signature[tab_trie[l]], signature[tab_trie[l-1]])) );
 				if(!signature_egales(ancien_signature[tab_trie[l]], ancien_signature[tab_trie[l-1]])) {
+					num = num+1;
+				}
+				
+				pi_tab[tab_trie[l]]=num;
+				
+			}
+			if(pi_num!=num) {
+				change=true;
+				pi_num=num;
+			}
+			else {
+				change=false;
+			}*/
+			
+			
+			//renumerotation
+			//la signature est trie dans l'ordre croissant
+			int num=1;
+			//nouvelle partition
+			//a quel etat correspondait tab_trie[0] et ça donne un int
+			pi_tab[tab_trie[0]]=num;
+			for(int l=1; l<taille;l++) {
+				//comparaison de signature
+				//System.out.println((!signature_egales(signature[tab_trie[l]], signature[tab_trie[l-1]])) );
+				if(!signature_egales(signature[l], signature[l-1])) {
 					num = num+1;
 				}
 				

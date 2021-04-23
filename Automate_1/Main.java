@@ -14,10 +14,10 @@ public class Main {
 		
 		//Automate automate = FileReader.createAutomateObject("D:/Efrei/L2/java/workspace/Automate/src/Automate_1/B10-4.txt");
 		
-		Automate automate = FileReader.createAutomateObject("D:/Efrei/L2/java/workspace/Automate/src/Automate_1/Test_epsilon.txt");
+		//Automate automate = FileReader.createAutomateObject("D:/Efrei/L2/java/workspace/Automate/src/Automate_1/Test_epsilon.txt");
 		
 		
-		//Automate automate = FileReader.createAutomateObject("D:/Efrei/L2/java/workspace/Automate/src/Automate_1/B10-10.txt");
+		Automate automate = FileReader.createAutomateObject("D:/Efrei/L2/java/workspace/Automate/src/Automate_1/B10-10.txt");
 		
 		//Automate determinise = FileReader.createAutomateObject("D:/Efrei/L2/java/workspace/Automate/src/Automate_1/B10-1.txt");
 		
@@ -30,17 +30,17 @@ public class Main {
 		copie.afficher_automate(); 
 		
 		
-		
+		/*
 		copie = copie.elimination_epsilon();
 		copie.afficher_automate();	
 		copie =  copie.determinise();
 		copie.completion();
-		copie.afficher_automate();
+		copie.afficher_automate();*/
 		
 		
 	
 		
-		//copie = copie.minimisation();
+		copie = copie.minimisation();
 		//copie.afficher_automate();
 		
 		

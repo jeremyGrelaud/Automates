@@ -1186,7 +1186,23 @@ public class Automate {
 				}
 				
 				Etat new_etat = merge(etats_meme_grp);
+				//il faut changer le nom des etats de la liste en leur nouveau nom dans les transi
+				for(Etat etat : automate.getEtats()) {
+					for(String clef : etat.getTransi().keySet()) {
+						for(Etat etat2 : etat.getTransi().get(clef)) {
+							for(Etat etat_modifie : etats_meme_grp) {
+								if(etat2.equals(etat_modifie)) {
+									etat2.setNom(new_etat.getNom());
+								}
+							}
+							
+						}
+							
+						
+					}
+				}
 				automate_min.getEtats().add(new_etat);
+				
 				//deja_traite.add(automate.getEtats().get(i));
 			}
 			

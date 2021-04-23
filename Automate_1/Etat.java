@@ -239,5 +239,6 @@ public class Etat{
 		
 		
 	}
+	//si 2 etats ont le meme nom alors on les consideres egaux
 
 }

@@ -873,9 +873,26 @@ public class Automate {
 						etat2.setTransi(map);
 					}
 				}*/
+				
 				etat.getTransi().remove("");
 				
 			}
+			
+			
+			for(Etat etat : liste_nouveaux_etats) {
+				for(String clef : etat.getTransi().keySet()) {
+					for(Etat etat_destination : etat.getTransi().get(clef)) {
+						//on remplace les etat_destination par leur etat correspondant de la liste principale
+						for(Etat etat_de_base : liste_nouveaux_etats) {
+							if(etat_destination.equals(etat_de_base)) {
+								etat_destination.setTransi(etat_de_base.getTransi());
+								etat_destination.setTypes(etat_de_base.getTypes());
+							}
+						}
+					}
+				}
+			}
+			
 			
 			
 			
@@ -982,9 +999,12 @@ public class Automate {
 			}	
 		}
 		
+		/*
 		for(int i=0; i<automate.getEtats().size();i++) {
 			System.out.println(pi_tab[i]);
 		}
+		System.out.println("");
+		*/
 		
 	
 		
@@ -1032,7 +1052,7 @@ public class Automate {
 					
 				}
 				
-			
+			/*
 			System.out.println("SIGNATURE :");
 			for(int i=0; i<taille;i++) {
 				for(int z=0;z<nbr_colonnes;z++) {
@@ -1040,7 +1060,7 @@ public class Automate {
 				}
 				System.out.println("");
 			}
-			System.out.println("");
+			System.out.println("");*/
 				
 			
 			for(int i=0; i<taille;i++) {
@@ -1076,7 +1096,7 @@ public class Automate {
 						compteur++;
 						//le plus petit est maintenant au début
 						
-						
+						/*
 						System.out.println("SIGNATURE :");
 						for(int i=0; i<taille;i++) {
 							for(int z=0;z<nbr_colonnes;z++) {
@@ -1084,7 +1104,7 @@ public class Automate {
 							}
 							System.out.println("");
 						}
-						System.out.println("");
+						System.out.println("");*/
 					
 					
 					if(compteur == automate.getEtats().size()) {
@@ -1101,12 +1121,14 @@ public class Automate {
 			}
 			
 			
+			/*
 			for(int i=0; i<pi_tab.length;i++) {
 				System.out.println(tab_trie[i]);
 			}
-			System.out.println("");
+			System.out.println("");*/
 			
 			/***VERiF signature*/	
+			/*
 			System.out.println("Matrice signature :");
 			for(int i=0; i<taille;i++) {
 				for(int z=0;z<nbr_colonnes;z++) {
@@ -1121,7 +1143,7 @@ public class Automate {
 					System.out.print(ancien_signature[i][z]);
 				}
 				System.out.println("");
-			}
+			}*/
 			
 			
 			
@@ -1152,10 +1174,11 @@ public class Automate {
 			
 		}while(change==true);
 		
-		
+		/*
 		for(int i=0; i<pi_tab.length;i++) {
 			System.out.println(pi_tab[i]);
 		}
+		System.out.println("");*/
 		
 		
 		
@@ -1238,118 +1261,7 @@ public class Automate {
 		
 		return true;
 	}
-	
-	/*
-	private Automate minimiser() {
-		Automate automate_a_minimiser = new Automate(this);
-		Automate minimise = new Automate();
-		
-		minimise.setAlphabet(automate_a_minimiser.getAlphabet());
-		//Algo
-		//on commence par intialiser 2 liste : les étatas finaux et les non finaux
-		
-		//a chaque etape on a une liste de liste d'etats
-		//pour avoir l'etape ssuivante on regarde si les listes interne peuvent être séparées
-		
-		List<List<Etat>> Partition = new ArrayList<List<Etat>>();
-		List<Etat> finaux = new ArrayList<Etat>();
-		List<Etat> non_finaux = new ArrayList<Etat>();
-		
-		//initialisation
-		
-		for(Etat etat : automate_a_minimiser.etats ){
-			if(etat.getTypes().contains(TypeEtat.EXIT)) {
-				finaux.add(etat);
-			}
-			else {
-				non_finaux.add(etat);
-			}	
-		}
-		
-		Partition.add(non_finaux);
-		Partition.add(finaux);
-		
-		List<List<Etat>> New_Partition = new ArrayList<List<Etat>>();
-		
-		do {
-			
-			//pour chaque sous liste de la partion courante on cherche les 
-			//etats pouvant être séparés
-			
-			for(List<Etat> liste : Partition) {
-				for(Etat etat : liste) {
-					for(int i=0; i<liste.size();i++) {
-						//on compare cet etat avec tous les autres
-						if(etat!=liste.get(i)) {
-							
-							boolean meme_comportement = true;
-							for(String clef : etat.getTransi().keySet()) {
-								
-								Etat temp1 = etat.getTransi().get(clef).get(0);
-								Etat temp2 = liste.get(i).getTransi().get(clef).get(0);
-								
-								if(!temp1.equals(temp2)) {
-									meme_comportement = false;
-								}
-							}
-							//si meme comportement entre les 2 etats pour toutes les clef
-							
-							List<Etat> new_list = new ArrayList<Etat>();
-							
-							if(meme_comportement == true) {
-								new_list.add(etat);
-								new_list.add(liste.get(i));
-								
-								New_Partition.add(new_list);
-							}
-							else {
-								List<Etat> new_list2 = new ArrayList<Etat>();
-								
-								new_list.add(etat);
-								new_list2.add(liste.get(i));
-								
-								New_Partition.add(new_list);
-								New_Partition.add(new_list2);
-							}
-							
-							
-						}
-					}
-					
-					
-				}
-			}
-			
-		System.out.println(Partition);
-		System.out.println(New_Partition);
-		Partition.clear();
-		Partition.addAll(New_Partition);
-		New_Partition.clear();
-		
-		}while(!Partition.equals(New_Partition));
-		
-		
-		
-		//après on regarde dans New_partition on va fusionner les etats des sous_liste entre eux
-		//enfin on ajoute tous les etats de la grande liste a l'automate
-		
-		for(List<Etat> liste : New_Partition) {
-			if(liste.size()>1) {
-				//on fusionne tous les etats entre eux
-				minimise.etats.add(merge(liste));
-			}
-			else {
-				minimise.etats.add(liste.get(0));
-			}
-		}
-		
-		
-		return minimise;
-	}
-	*/
-	
-	
-	
+
 	public void programme() {
 		Automate automate_depart = new Automate(this);
 		Automate automate_a_modifier = new Automate(this);
@@ -1366,7 +1278,7 @@ public class Automate {
 			System.out.println("3 : automate complementaire ");
 			System.out.println("4 : reconaissance de mots sur l'automate");
 			System.out.println("5 : determinisation synchrone");
-			System.out.println("6 : minimisation synchrone");
+			System.out.println("6 : minimisation");
 			System.out.println("7 : revenir a l'automate de depart");
 			mot = sc.nextLine();
 			
@@ -1378,7 +1290,7 @@ public class Automate {
 				System.out.println("3 : automate complementaire ");
 				System.out.println("4 : reconaissance de mots sur l'automate");
 				System.out.println("5 : determinisation synchrone");
-				System.out.println("6 : minimisation synchrone");
+				System.out.println("6 : minimisation");
 				System.out.println("7 : revenir a l'automate de depart");
 				mot = sc.nextLine();
 			}
@@ -1407,7 +1319,7 @@ public class Automate {
 				automate_a_modifier.afficher_automate();	
 			}
 			if(mot.equals("6")){
-				System.out.println("Indisponible pour le moment");
+				automate_a_modifier = automate_a_modifier.minimisation();
 			}
 			if(mot.equals("7")){
 				automate_a_modifier = automate_depart;

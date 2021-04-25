@@ -1,25 +1,22 @@
 package Automate_1;
 
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.net.URISyntaxException;
+import java.util.Scanner;
 
 public class Main {
 	
 	public static void main(String[] args) throws FileNotFoundException {
+
+		/*
+		String path = getChemin("B10-10");
+		
+		Automate automate = FileReader.createAutomateObject(path);*/
+		
+		Automate automate = choisirAutomate();
 		
 		
-		//Automate automate = FileReader.createAutomateObject("D:/Efrei/L2/java/workspace/Automate/src/Automate_1/B10-8.txt");
-		//Automate automate = FileReader.createAutomateObject("D:/Efrei/L2/java/workspace/Automate/src/Automate_1/B10-1.txt");
-		//Automate automate = FileReader.createAutomateObject("D:/Efrei/L2/java/workspace/Automate/src/Automate_1/B10-2.txt");
-		//Automate automate = FileReader.createAutomateObject("D:/Efrei/L2/java/workspace/Automate/src/Automate_1/B10-3.txt");
-		
-		//Automate automate = FileReader.createAutomateObject("D:/Efrei/L2/java/workspace/Automate/src/Automate_1/B10-4.txt");
-		
-		//Automate automate = FileReader.createAutomateObject("D:/Efrei/L2/java/workspace/Automate/src/Automate_1/Test_epsilon.txt");
-		
-		
-		Automate automate = FileReader.createAutomateObject("D:/Efrei/L2/java/workspace/Automate/src/Automate_1/B10-10.txt");
-		
-		//Automate determinise = FileReader.createAutomateObject("D:/Efrei/L2/java/workspace/Automate/src/Automate_1/B10-1.txt");
 		
 		Automate copie = new Automate(automate);
 		
@@ -37,103 +34,66 @@ public class Main {
 		copie.completion();
 		copie.afficher_automate();*/
 		
-		
-	
-		
 		copie = copie.minimisation();
 		//copie.afficher_automate();
 		
-		
-		
-		/*
-		copie.est_un_automate_deterministe();
-		copie.est_un_automate_complet();
-		*/
-		
-		/*
-		System.out.println("");
-		copie = copie.determinise();
-		copie.afficher_automate();
-		
-		copie.est_un_automate_deterministe();
-		
-		copie = copie.minimisation();*/
-		
-		
-		
 		//copie.programme();
 		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		/*
-		System.out.println("");
-		copie.automate_complementaire();
-		copie.afficher_automate();
-		*/
-		
-		/*
-		System.out.println(copie.reconnaitre_mot_automate("aba"));
-		copie.reconnaitre_plusieurs_mot();
-		*/
-		
-		//determinise.reconnaitre_plusieurs_mot();
-
-		
-		//System.out.println(copie.est_standard());
-		//copie.afficher_automate();
-		
-		//System.out.println("");
-		//automate.afficher_automate();
-		/*marche pas encore*/
-		/*
-		automate.determinisation(automate);
-		automate.afficher_automate();
-		*/
-		
-		
-		
-		//System.out.println(automate.est_standard());
-		
-		//automate.standardisation(); 
-		
-		//automate.afficher_automate();   
-		
-		//automate.est_un_automate_asynchrone();
-		
-		//automate.est_un_automate_deterministe();
-		
-		//automate.est_un_automate_complet();
-		
-		//copie = copie.completion(); 
-		
-		//System.out.println("");
-		//copie.afficher_automate();
-		
-			
-		//automate.automate_complementaire(automate);
-		//automate.afficher_automate();
-		
-		//System.out.println(automate.reconnaitre("aa", automate));
-		
-		/*
-		System.out.println("determinisation");
-		Automate deter = automate.determinisation_et_completion_synchrone(automate);
-		deter.afficher_automate(deter);
-		*/
-		
-		//System.out.println(automate.reconnaitre_mot_automate_determinsite("aba"));
-		
-		//automate.afficher_automate();
 
 	}
+
+		//renvoi le path de l'automate choisi en entrant son nom
+		private static String getChemin(String automate_choisi) {
+		
+		
+		File root = null;
+		
+		try {
+			root = new File(Thread.currentThread().getContextClassLoader().getResource("").toURI());
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		String chemin = root.toString();
+		chemin = chemin.replaceAll("bin", "");
+	
+		String path = chemin + "src/Automate_1/files/" + automate_choisi +".txt";
+		
+		return path;
+		
+	}
+		
+		private static Automate choisirAutomate() {
+			
+			Scanner sc = new Scanner(System.in);
+			String mot = "";
+			Automate automate = null;
+			
+				System.out.println("Veuillez ecrire le numero de l'automate :");
+				System.out.println("(un chiffre de 1 a 45) ");
+				mot = sc.nextLine();
+				
+				
+				int i = Integer.parseInt(mot);
+				while(i<1 || i>45) {
+					System.out.println("Attention :");
+					System.out.println("(un chiffre de 1 a 45 ");
+					mot = sc.nextLine();
+				}
+				
+				
+				String path = getChemin("#"+mot);
+				try {
+					automate = FileReader.createAutomateObject(path);
+				} catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+			sc.close();
+			return automate;
+		}
 	
 
 }

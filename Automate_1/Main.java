@@ -13,18 +13,23 @@ public class Main {
 		String path = getChemin("B10-10");
 		
 		Automate automate = FileReader.createAutomateObject(path);*/
+	
+		Execution();
 		
-		Automate automate = choisirAutomate();
 		
 		
+		//Automate automate = choisirAutomate();
+		//Automate copie = new Automate(automate);
 		
-		Automate copie = new Automate(automate);
+	
+		
+		
 		
 		//copie.completion();
 		//copie.standardisation();
 		//copie.est_un_automate_complet();
-		System.out.println("");
-		copie.afficher_automate(); 
+		//System.out.println("");
+		//copie.afficher_automate(); 
 		
 		
 		/*
@@ -34,7 +39,7 @@ public class Main {
 		copie.completion();
 		copie.afficher_automate();*/
 		
-		copie = copie.minimisation();
+		//copie = copie.minimisation();
 		//copie.afficher_automate();
 		
 		//copie.programme();
@@ -67,19 +72,19 @@ public class Main {
 		private static Automate choisirAutomate() {
 			
 			Scanner sc = new Scanner(System.in);
-			String mot = "";
+			int mot;
 			Automate automate = null;
 			
 				System.out.println("Veuillez ecrire le numero de l'automate :");
 				System.out.println("(un chiffre de 1 a 45) ");
-				mot = sc.nextLine();
+				mot = sc.nextInt();
 				
 				
-				int i = Integer.parseInt(mot);
-				while(i<1 || i>45) {
+				
+				while(mot<1 || mot>45) {
 					System.out.println("Attention :");
 					System.out.println("(un chiffre de 1 a 45 ");
-					mot = sc.nextLine();
+					mot = sc.nextInt();
 				}
 				
 				
@@ -91,8 +96,31 @@ public class Main {
 					e.printStackTrace();
 				}
 				
-			sc.close();
+			//sc.close();
 			return automate;
+		}
+		
+		
+		private static void Execution() {
+			
+			Scanner sc = new Scanner(System.in);
+			String mot = "";
+			
+			do {
+				Automate automate = choisirAutomate();
+				automate.programme();
+			
+				
+				System.out.println("Si vous voulez quitter tapez EXIT");
+				System.out.println("Pour continuer tapez autre chose");
+				mot = sc.nextLine();
+				
+				
+			}while(!mot.equals("EXIT"));
+			
+			
+			sc.close();
+			
 		}
 	
 

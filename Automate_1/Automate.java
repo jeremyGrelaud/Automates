@@ -1297,8 +1297,10 @@ public class Automate {
 		Scanner sc = new Scanner(System.in);
 		String mot = "";
 		
+		System.out.println("");
 		System.out.println("Pour arrêter l'execution taper EXIT");
 		do {
+			System.out.println("");
 			System.out.println("Veuillez taper un chiffre :");
 			System.out.println("1 : standardisation ");
 			System.out.println("2 : completion ");
@@ -1307,9 +1309,13 @@ public class Automate {
 			System.out.println("5 : determinisation synchrone");
 			System.out.println("6 : minimisation");
 			System.out.println("7 : revenir a l'automate de depart");
+			
 			mot = sc.nextLine();
 			
+			
+			
 			while(!( (mot.equals("1")) || (mot.equals("2")) || (mot.equals("3")) || (mot.equals("4")) || (mot.equals("5")) || (mot.equals("6")) || (mot.equals("7")) || (mot.equals("EXIT")) )) {
+				System.out.println("");
 				System.out.println("Veuillez faire un choix valide ");
 				System.out.println("Veuillez taper un chiffre :");
 				System.out.println("1 : standardisation ");
@@ -1319,7 +1325,9 @@ public class Automate {
 				System.out.println("5 : determinisation synchrone");
 				System.out.println("6 : minimisation");
 				System.out.println("7 : revenir a l'automate de depart");
+				
 				mot = sc.nextLine();
+				
 			}
 			
 			if(mot.equals("1")){
@@ -1356,7 +1364,8 @@ public class Automate {
 		}while(!mot.equals("EXIT"));
 		//fin
 		System.out.println("Fin du programme");
-		sc.close();
+		//sc.close();
+		//on ne peut pas fermer le scanner sinon on n'a plus de flux pour  execution
 		
 	}
 	

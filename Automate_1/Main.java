@@ -2,6 +2,7 @@ package Automate_1;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.PrintStream;
 import java.net.URISyntaxException;
 import java.util.Scanner;
 
@@ -14,7 +15,26 @@ public class Main {
 		
 		Automate automate = FileReader.createAutomateObject(path);*/
 	
-		Execution();
+		
+		try { // Ajoute un try + catch
+
+            PrintStream console = System.out; // Ajoute ça 
+
+            PrintStream fileOut = new PrintStream("src/Automate_1/traces/trace1.txt"); // Et ça
+
+            System.setOut(fileOut); // Et ça
+
+            // TON CODE 
+            //Execution();
+            Trace();
+
+            System.setOut(console); // Et ça à la fin
+
+        } catch (FileNotFoundException ex) {
+            ex.printStackTrace();
+        }
+		
+		
 		
 		
 		
@@ -50,6 +70,8 @@ public class Main {
 		//renvoi le path de l'automate choisi en entrant son nom
 		private static String getChemin(String automate_choisi) {
 		
+			
+			
 		
 		File root = null;
 		
@@ -118,10 +140,90 @@ public class Main {
 				
 			}while(!mot.equals("EXIT"));
 			
+			System.out.println("Fin du programme");
+			
 			
 			sc.close();
 			
 		}
+		
+		private static void Trace() {
+			
+			Scanner sc = new Scanner(System.in);
+			int mot;
+			Automate automate = null;
+			
+			System.out.println("Veuillez ecrire le numero de l'automate :");
+			System.out.println("(un chiffre de 1 a 45) ");
+			mot = sc.nextInt();	
+			String path = getChemin("#"+mot);
+			try {
+				automate = FileReader.createAutomateObject(path);
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			
+			//Suite d'opérations
+			System.out.println("Automate choisi : ");
+			automate.afficher_automate();
+			
+			//Test présence epsilons
+			automate.est_un_automate_asynchrone();
+			
+			//determinisation et completion si nécessaire
+			if(!automate.est_un_automate_deterministe()) {
+				if(automate.est_un_automate_asynchrone()) {
+					automate = automate.elimination_epsilon();
+					automate = automate.determinise();
+				}
+				else {
+					automate = automate.determinise();
+				}
+				
+			}
+			else {
+				System.out.println("Automate déjà déterministe");
+			}
+			System.out.println("Automate determinisé");
+			automate.afficher_automate();
+			
+			if(!automate.est_un_automate_complet()) {
+				automate.completion();
+			}
+			else {
+				System.out.println("Automate déjà complet");
+			}
+			System.out.println("Automate complet : ");
+			automate.afficher_automate();
+			
+			automate = automate.minimisation();
+			
+			//automate.reconnaitre_plusieurs_mot();
+			System.out.println("Reconaissance du mot ab: ");
+			if(automate.reconnaitre_mot_automate("ab")) {
+				System.out.println("Mot reconnu");
+			}
+			else {
+				System.out.println("Mot non reconnu");
+			}
+			
+			automate.automate_complementaire();
+			System.out.println("Automate complementaire");
+			automate.afficher_automate();
+			
+			System.out.println("Reconaissance du mot ab: ");
+			if(automate.reconnaitre_mot_automate("ab")) {
+				System.out.println("Mot reconnu");
+			}
+			else {
+				System.out.println("Mot non reconnu");
+			}
+			
+			
+		}
+			
 	
 
 }

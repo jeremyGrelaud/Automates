@@ -1,0 +1,52 @@
+Veuillez ecrire le numero de l'automate :
+(un chiffre de 1 a 45) 
+Automate choisi : 
+L'alphabet : 
+Les etats : 0 
+Les etats initiaux : 0 
+Les etats finaux : 0 
+0 transitions :
+L'automate n'est pas asynchrone
+
+L'automate est deterministe
+Automate déjà déterministe
+Automate determinisé
+L'alphabet : 
+Les etats : 0 
+Les etats initiaux : 0 
+Les etats finaux : 0 
+0 transitions :
+L'automate n'est pas asynchrone
+
+Automate complet
+Automate déjà complet
+Automate complet : 
+L'alphabet : 
+Les etats : 0 
+Les etats initiaux : 0 
+Les etats finaux : 0 
+0 transitions :
+
+L'automate est deterministe
+L'automate n'est pas asynchrone
+
+Automate complet
+Voici l'automate minimal : 
+L'alphabet : 
+Les etats : 0 
+Les etats initiaux : 0 
+Les etats finaux : 0 
+0 transitions :
+Reconaissance du mot ab: 
+Mot non reconnu
+
+L'automate est deterministe
+Automate complementaire cree
+Automate complementaire
+L'alphabet : 
+Les etats : 0 
+Les etats initiaux : 0 
+Les etats finaux : 
+0 transitions :
+Reconaissance du mot ab: 
+Mot non reconnu

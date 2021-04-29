@@ -372,6 +372,11 @@ public class Automate {
 	}
 	
 	public void completion() {
+		
+		if(this.est_un_automate_complet()) {
+			System.out.println("Votre automate est déjà complet");
+			return;
+		}
 			
 		Automate automate = new Automate(this);
 		//cr�er un etat poubelle
@@ -611,7 +616,7 @@ public class Automate {
 		}while(!mot.equals("QUIT"));
 		//fin
 		System.out.println("Fin de la reconaissance des mots");
-		sc.close();
+		//sc.close();
 	}
 
 	/***LANGAGE COMPLEMENTAIRE*/
@@ -677,8 +682,8 @@ public class Automate {
 		
 		
 		if(est_un_automate_asynchrone()) {
-			System.out.println("deter asynchrone pas encore faite");
-			return null;
+			automate_deter_async = automate_deter_async.determinisation_et_completion_asynchrone();
+			return automate_deter_async;
 		}
 		else {
 			if(est_un_automate_deterministe()) {
@@ -1306,7 +1311,7 @@ public class Automate {
 			System.out.println("2 : completion ");
 			System.out.println("3 : automate complementaire ");
 			System.out.println("4 : reconaissance de mots sur l'automate");
-			System.out.println("5 : determinisation synchrone");
+			System.out.println("5 : determinisation");
 			System.out.println("6 : minimisation");
 			System.out.println("7 : revenir a l'automate de depart");
 			
@@ -1322,7 +1327,7 @@ public class Automate {
 				System.out.println("2 : completion ");
 				System.out.println("3 : automate complementaire ");
 				System.out.println("4 : reconaissance de mots sur l'automate");
-				System.out.println("5 : determinisation synchrone");
+				System.out.println("5 : determinisation");
 				System.out.println("6 : minimisation");
 				System.out.println("7 : revenir a l'automate de depart");
 				
@@ -1363,7 +1368,7 @@ public class Automate {
 			
 		}while(!mot.equals("EXIT"));
 		//fin
-		System.out.println("Fin du programme");
+		//System.out.println("Fin du programme");
 		//sc.close();
 		//on ne peut pas fermer le scanner sinon on n'a plus de flux pour  execution
 		

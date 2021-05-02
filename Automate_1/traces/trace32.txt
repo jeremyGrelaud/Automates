@@ -1,0 +1,347 @@
+Le programme se deroule selon le plan :
+affichage, test presence epsilon, determinisation puis completion, minimisation, 
+reconaissance de mots, complementarisation, reconaissance de mots
+Veuillez ecrire le numero de l'automate :
+(un chiffre de 1 a 44) 
+
+Automate choisi : 
+L'alphabet : b a c 
+Les etats : 0 21 1 10 2 6 3 5 4 8 7 9 11 15 12 14 13 17 16 18 20 19 
+Les etats initiaux : 0 
+Les etats finaux : 21 
+30 transitions :
+0 * [1, 10]
+1 * [2, 6]
+10 * [11, 15]
+2 * [3, 5]
+6 a [7]
+3 b [4]
+5 * [8]
+4 * [3, 5]
+8 c [9]
+7 * [8]
+9 * [21]
+11 * [12, 14]
+15 b [16]
+12 a [13]
+14 * [17]
+13 * [12, 14]
+17 * [18, 20]
+16 * [17]
+18 c [19]
+20 * [21]
+19 * [18, 20]
+
+
+L'automate est asynchrone car :
+
+0 - * - [1, 10]
+
+L'automate est asynchrone car :
+
+1 - * - [2, 6]
+
+L'automate est asynchrone car :
+
+10 - * - [11, 15]
+
+L'automate est asynchrone car :
+
+2 - * - [3, 5]
+
+L'automate est asynchrone car :
+
+5 - * - [8]
+
+L'automate est asynchrone car :
+
+4 - * - [3, 5]
+
+L'automate est asynchrone car :
+
+7 - * - [8]
+
+L'automate est asynchrone car :
+
+9 - * - [21]
+
+L'automate est asynchrone car :
+
+11 - * - [12, 14]
+
+L'automate est asynchrone car :
+
+14 - * - [17]
+
+L'automate est asynchrone car :
+
+13 - * - [12, 14]
+
+L'automate est asynchrone car :
+
+17 - * - [18, 20]
+
+L'automate est asynchrone car :
+
+16 - * - [17]
+
+L'automate est asynchrone car :
+
+20 - * - [21]
+
+L'automate est asynchrone car :
+
+19 - * - [18, 20]
+
+Non deterministe car on a la transi : 0--[1, 10]
+
+L'automate est asynchrone car :
+
+0 - * - [1, 10]
+
+L'automate est asynchrone car :
+
+1 - * - [2, 6]
+
+L'automate est asynchrone car :
+
+10 - * - [11, 15]
+
+L'automate est asynchrone car :
+
+2 - * - [3, 5]
+
+L'automate est asynchrone car :
+
+5 - * - [8]
+
+L'automate est asynchrone car :
+
+4 - * - [3, 5]
+
+L'automate est asynchrone car :
+
+7 - * - [8]
+
+L'automate est asynchrone car :
+
+9 - * - [21]
+
+L'automate est asynchrone car :
+
+11 - * - [12, 14]
+
+L'automate est asynchrone car :
+
+14 - * - [17]
+
+L'automate est asynchrone car :
+
+13 - * - [12, 14]
+
+L'automate est asynchrone car :
+
+17 - * - [18, 20]
+
+L'automate est asynchrone car :
+
+16 - * - [17]
+
+L'automate est asynchrone car :
+
+20 - * - [21]
+
+L'automate est asynchrone car :
+
+19 - * - [18, 20]
+
+L'automate est asynchrone car :
+
+0 - * - [1, 10]
+
+L'automate est asynchrone car :
+
+1 - * - [2, 6]
+
+L'automate est asynchrone car :
+
+10 - * - [11, 15]
+
+L'automate est asynchrone car :
+
+2 - * - [3, 5]
+
+L'automate est asynchrone car :
+
+5 - * - [8]
+
+L'automate est asynchrone car :
+
+4 - * - [3, 5]
+
+L'automate est asynchrone car :
+
+7 - * - [8]
+
+L'automate est asynchrone car :
+
+9 - * - [21]
+
+L'automate est asynchrone car :
+
+11 - * - [12, 14]
+
+L'automate est asynchrone car :
+
+14 - * - [17]
+
+L'automate est asynchrone car :
+
+13 - * - [12, 14]
+
+L'automate est asynchrone car :
+
+17 - * - [18, 20]
+
+L'automate est asynchrone car :
+
+16 - * - [17]
+
+L'automate est asynchrone car :
+
+20 - * - [21]
+
+L'automate est asynchrone car :
+
+19 - * - [18, 20]
+
+Non deterministe car on a la transi : 0-a-[13, 7]
+
+Automate determinisé
+L'alphabet : b a c 
+Les etats : 0 19.9 19 16.4 4 9 13.7 13 
+Les etats initiaux : 0 
+Les etats finaux : 0 19.9 19 16.4 9 13.7 13 
+13 transitions :
+0 a [13.7]
+0 b [16.4]
+0 c [19.9]
+19.9 c [19]
+19 c [19]
+16.4 b [4]
+16.4 c [19.9]
+4 b [4]
+4 c [9]
+13.7 a [13]
+13.7 c [19.9]
+13 a [13]
+13 c [19]
+L'automate n'est pas asynchrone
+
+Automate non complet car 19.9 n'a pas de transi pour toutes les lettres de l'alphabet
+L'automate n'est pas asynchrone
+
+Automate non complet car 19.9 n'a pas de transi pour toutes les lettres de l'alphabet
+
+Automate complet : 
+L'alphabet : b a c 
+Les etats : 0 19.9 19 16.4 4 9 13.7 13 p 
+Les etats initiaux : 0 
+Les etats finaux : 0 19.9 19 16.4 9 13.7 13 
+27 transitions :
+0 a [13.7]
+0 b [16.4]
+0 c [19.9]
+19.9 a [p]
+19.9 b [p]
+19.9 c [19]
+19 a [p]
+19 b [p]
+19 c [19]
+16.4 a [p]
+16.4 b [4]
+16.4 c [19.9]
+4 a [p]
+4 b [4]
+4 c [9]
+9 a [p]
+9 b [p]
+9 c [p]
+13.7 a [13]
+13.7 b [p]
+13.7 c [19.9]
+13 a [13]
+13 b [p]
+13 c [19]
+p a [p]
+p b [p]
+p c [p]
+Processus de minimisation :
+
+L'automate est deterministe
+L'automate n'est pas asynchrone
+
+Automate complet
+Voici l'automate minimal : 
+L'alphabet : b a c 
+Les etats : 0 19.9.19 16.4 4 9 13.7.13 p 
+Les etats initiaux : 0 
+Les etats finaux : 0 19.9.19 16.4 9 13.7.13 
+21 transitions :
+0 a [13.7.13]
+0 b [16.4]
+0 c [19.9.19]
+19.9.19 a [p]
+19.9.19 b [p]
+19.9.19 c [19.9.19]
+16.4 a [p]
+16.4 b [4]
+16.4 c [19.9.19]
+4 a [p]
+4 b [4]
+4 c [9]
+9 a [p]
+9 b [p]
+9 c [p]
+13.7.13 a [13.7.13]
+13.7.13 b [p]
+13.7.13 c [19.9.19]
+p a [p]
+p b [p]
+p c [p]
+
+Reconaissance du mot ab: 
+Mot non reconnu
+
+L'automate est deterministe
+Automate complementaire cree
+Automate complementaire
+L'alphabet : b a c 
+Les etats : 0 19.9.19 16.4 4 9 13.7.13 p 
+Les etats initiaux : 0 
+Les etats finaux : 4 p 
+21 transitions :
+0 a [13.7.13]
+0 b [16.4]
+0 c [19.9.19]
+19.9.19 a [p]
+19.9.19 b [p]
+19.9.19 c [19.9.19]
+16.4 a [p]
+16.4 b [4]
+16.4 c [19.9.19]
+4 a [p]
+4 b [4]
+4 c [9]
+9 a [p]
+9 b [p]
+9 c [p]
+13.7.13 a [13.7.13]
+13.7.13 b [p]
+13.7.13 c [19.9.19]
+p a [p]
+p b [p]
+p c [p]
+
+Reconaissance du mot ab: 
+Mot non reconnu

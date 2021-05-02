@@ -1,0 +1,153 @@
+Le programme se deroule selon le plan :
+affichage, test presence epsilon, determinisation puis completion, minimisation, 
+reconaissance de mots, complementarisation, reconaissance de mots
+Veuillez ecrire le numero de l'automate :
+(un chiffre de 1 a 44) 
+
+Automate choisi : 
+L'alphabet : a b c d 
+Les etats : 1 6 7 8 0 5 2 3 4 
+Les etats initiaux : 1 6 7 8 0 
+Les etats finaux : 5 
+8 transitions :
+1 a [2]
+6 a [2]
+7 b [3]
+8 c [4]
+0 d [5]
+2 b [3]
+3 c [4]
+4 d [5]
+
+L'automate n'est pas asynchrone
+
+Non deterministe car plus d'une entree
+L'automate n'est pas asynchrone
+
+Non deterministe car plus d'une entree
+
+Automate determinisé
+L'alphabet : a b c d 
+Les etats : 1.6.7.8.0 5 4 3 2 
+Les etats initiaux : 1.6.7.8.0 
+Les etats finaux : 5 
+7 transitions :
+1.6.7.8.0 a [2]
+1.6.7.8.0 b [3]
+1.6.7.8.0 c [4]
+1.6.7.8.0 d [5]
+4 d [5]
+3 c [4]
+2 b [3]
+L'automate n'est pas asynchrone
+
+Automate non complet car 5 n'a pas de transi pour toutes les lettres de l'alphabet
+L'automate n'est pas asynchrone
+
+Automate non complet car 5 n'a pas de transi pour toutes les lettres de l'alphabet
+
+Automate complet : 
+L'alphabet : a b c d 
+Les etats : 1.6.7.8.0 5 4 3 2 p 
+Les etats initiaux : 1.6.7.8.0 
+Les etats finaux : 5 
+24 transitions :
+1.6.7.8.0 a [2]
+1.6.7.8.0 b [3]
+1.6.7.8.0 c [4]
+1.6.7.8.0 d [5]
+5 a [p]
+5 b [p]
+5 c [p]
+5 d [p]
+4 a [p]
+4 b [p]
+4 c [p]
+4 d [5]
+3 a [p]
+3 b [p]
+3 c [4]
+3 d [p]
+2 a [p]
+2 b [3]
+2 c [p]
+2 d [p]
+p a [p]
+p b [p]
+p c [p]
+p d [p]
+Processus de minimisation :
+
+L'automate est deterministe
+L'automate n'est pas asynchrone
+
+Automate complet
+Voici l'automate minimal : 
+L'alphabet : a b c d 
+Les etats : 1.6.7.8.0 5 4 3 2 p 
+Les etats initiaux : 1.6.7.8.0 
+Les etats finaux : 5 
+24 transitions :
+1.6.7.8.0 a [2]
+1.6.7.8.0 b [3]
+1.6.7.8.0 c [4]
+1.6.7.8.0 d [5]
+5 a [p]
+5 b [p]
+5 c [p]
+5 d [p]
+4 a [p]
+4 b [p]
+4 c [p]
+4 d [5]
+3 a [p]
+3 b [p]
+3 c [4]
+3 d [p]
+2 a [p]
+2 b [3]
+2 c [p]
+2 d [p]
+p a [p]
+p b [p]
+p c [p]
+p d [p]
+
+Reconaissance du mot ab: 
+Mot non reconnu
+
+L'automate est deterministe
+Automate complementaire cree
+Automate complementaire
+L'alphabet : a b c d 
+Les etats : 1.6.7.8.0 5 4 3 2 p 
+Les etats initiaux : 1.6.7.8.0 
+Les etats finaux : 1.6.7.8.0 4 3 2 p 
+24 transitions :
+1.6.7.8.0 a [2]
+1.6.7.8.0 b [3]
+1.6.7.8.0 c [4]
+1.6.7.8.0 d [5]
+5 a [p]
+5 b [p]
+5 c [p]
+5 d [p]
+4 a [p]
+4 b [p]
+4 c [p]
+4 d [5]
+3 a [p]
+3 b [p]
+3 c [4]
+3 d [p]
+2 a [p]
+2 b [3]
+2 c [p]
+2 d [p]
+p a [p]
+p b [p]
+p c [p]
+p d [p]
+
+Reconaissance du mot ab: 
+Mot non reconnu

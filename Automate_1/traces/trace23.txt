@@ -1,0 +1,152 @@
+Le programme se deroule selon le plan :
+affichage, test presence epsilon, determinisation puis completion, minimisation, 
+reconaissance de mots, complementarisation, reconaissance de mots
+Veuillez ecrire le numero de l'automate :
+(un chiffre de 1 a 44) 
+
+Automate choisi : 
+L'alphabet : a b c d 
+Les etats : 1 0 2 3 4 
+Les etats initiaux : 1 
+Les etats finaux : 0 
+8 transitions :
+1 a [2]
+0 d [0]
+2 a [2]
+2 b [3]
+3 b [3]
+3 c [4]
+4 c [4]
+4 d [0]
+
+L'automate n'est pas asynchrone
+
+L'automate est deterministe
+Automate déjà déterministe
+
+Automate determinisé
+L'alphabet : a b c d 
+Les etats : 1 0 2 3 4 
+Les etats initiaux : 1 
+Les etats finaux : 0 
+8 transitions :
+1 a [2]
+0 d [0]
+2 a [2]
+2 b [3]
+3 b [3]
+3 c [4]
+4 c [4]
+4 d [0]
+L'automate n'est pas asynchrone
+
+Automate non complet car 1 n'a pas de transi pour toutes les lettres de l'alphabet
+L'automate n'est pas asynchrone
+
+Automate non complet car 1 n'a pas de transi pour toutes les lettres de l'alphabet
+
+Automate complet : 
+L'alphabet : a b c d 
+Les etats : 1 0 2 3 4 p 
+Les etats initiaux : 1 
+Les etats finaux : 0 
+24 transitions :
+1 a [2]
+1 b [p]
+1 c [p]
+1 d [p]
+0 a [p]
+0 b [p]
+0 c [p]
+0 d [0]
+2 a [2]
+2 b [3]
+2 c [p]
+2 d [p]
+3 a [p]
+3 b [3]
+3 c [4]
+3 d [p]
+4 a [p]
+4 b [p]
+4 c [4]
+4 d [0]
+p a [p]
+p b [p]
+p c [p]
+p d [p]
+Processus de minimisation :
+
+L'automate est deterministe
+L'automate n'est pas asynchrone
+
+Automate complet
+Voici l'automate minimal : 
+L'alphabet : a b c d 
+Les etats : 1 0 2 3 4 p 
+Les etats initiaux : 1 
+Les etats finaux : 0 
+24 transitions :
+1 a [2]
+1 b [p]
+1 c [p]
+1 d [p]
+0 a [p]
+0 b [p]
+0 c [p]
+0 d [0]
+2 a [2]
+2 b [3]
+2 c [p]
+2 d [p]
+3 a [p]
+3 b [3]
+3 c [4]
+3 d [p]
+4 a [p]
+4 b [p]
+4 c [4]
+4 d [0]
+p a [p]
+p b [p]
+p c [p]
+p d [p]
+
+Reconaissance du mot ab: 
+Mot non reconnu
+
+L'automate est deterministe
+Automate complementaire cree
+Automate complementaire
+L'alphabet : a b c d 
+Les etats : 1 0 2 3 4 p 
+Les etats initiaux : 1 
+Les etats finaux : 1 2 3 4 p 
+24 transitions :
+1 a [2]
+1 b [p]
+1 c [p]
+1 d [p]
+0 a [p]
+0 b [p]
+0 c [p]
+0 d [0]
+2 a [2]
+2 b [3]
+2 c [p]
+2 d [p]
+3 a [p]
+3 b [3]
+3 c [4]
+3 d [p]
+4 a [p]
+4 b [p]
+4 c [4]
+4 d [0]
+p a [p]
+p b [p]
+p c [p]
+p d [p]
+
+Reconaissance du mot ab: 
+Mot non reconnu

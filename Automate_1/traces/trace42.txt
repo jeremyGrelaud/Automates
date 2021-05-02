@@ -1,0 +1,134 @@
+Le programme se deroule selon le plan :
+affichage, test presence epsilon, determinisation puis completion, minimisation, 
+reconaissance de mots, complementarisation, reconaissance de mots
+Veuillez ecrire le numero de l'automate :
+(un chiffre de 1 a 44) 
+
+Automate choisi : 
+L'alphabet : a b c 
+Les etats : 1 0 2 3 4 
+Les etats initiaux : 1 
+Les etats finaux : 1 
+14 transitions :
+1 a [0]
+1 b [2]
+0 a [3]
+0 b [1]
+0 c [3]
+2 a [1]
+2 b [4]
+2 c [4]
+3 a [3]
+3 b [3]
+3 c [3]
+4 a [4]
+4 b [4]
+4 c [4]
+
+L'automate n'est pas asynchrone
+
+L'automate est deterministe
+Automate déjà déterministe
+
+Automate determinisé
+L'alphabet : a b c 
+Les etats : 1 0 2 3 4 
+Les etats initiaux : 1 
+Les etats finaux : 1 
+14 transitions :
+1 a [0]
+1 b [2]
+0 a [3]
+0 b [1]
+0 c [3]
+2 a [1]
+2 b [4]
+2 c [4]
+3 a [3]
+3 b [3]
+3 c [3]
+4 a [4]
+4 b [4]
+4 c [4]
+L'automate n'est pas asynchrone
+
+Automate non complet car 1 n'a pas de transi pour toutes les lettres de l'alphabet
+L'automate n'est pas asynchrone
+
+Automate non complet car 1 n'a pas de transi pour toutes les lettres de l'alphabet
+
+Automate complet : 
+L'alphabet : a b c 
+Les etats : 1 0 2 3 4 p 
+Les etats initiaux : 1 
+Les etats finaux : 1 
+18 transitions :
+1 a [0]
+1 b [2]
+1 c [p]
+0 a [3]
+0 b [1]
+0 c [3]
+2 a [1]
+2 b [4]
+2 c [4]
+3 a [3]
+3 b [3]
+3 c [3]
+4 a [4]
+4 b [4]
+4 c [4]
+p a [p]
+p b [p]
+p c [p]
+Processus de minimisation :
+
+L'automate est deterministe
+L'automate n'est pas asynchrone
+
+Automate complet
+Voici l'automate minimal : 
+L'alphabet : a b c 
+Les etats : 1 0 2 3.4.p 
+Les etats initiaux : 1 
+Les etats finaux : 1 
+12 transitions :
+1 a [0]
+1 b [2]
+1 c [3.4.p]
+0 a [3.4.p]
+0 b [1]
+0 c [3.4.p]
+2 a [1]
+2 b [3.4.p]
+2 c [3.4.p]
+3.4.p a [3.4.p]
+3.4.p b [3.4.p]
+3.4.p c [3.4.p]
+
+Reconaissance du mot ab: 
+Mot reconnu
+
+L'automate est deterministe
+Automate complementaire cree
+Automate complementaire
+L'alphabet : a b c 
+Les etats : 1 0 2 3.4.p 
+Les etats initiaux : 1 
+Les etats finaux : 0 2 3.4.p 
+12 transitions :
+1 a [0]
+1 b [2]
+1 c [3.4.p]
+0 a [3.4.p]
+0 b [1]
+0 c [3.4.p]
+2 a [1]
+2 b [3.4.p]
+2 c [3.4.p]
+3.4.p a [3.4.p]
+3.4.p b [3.4.p]
+3.4.p c [3.4.p]
+
+Reconaissance du mot ab: 
+Mot reconnu

@@ -1,0 +1,115 @@
+Le programme se deroule selon le plan :
+affichage, test presence epsilon, determinisation puis completion, minimisation, 
+reconaissance de mots, complementarisation, reconaissance de mots
+Veuillez ecrire le numero de l'automate :
+(un chiffre de 1 a 44) 
+
+Automate choisi : 
+L'alphabet : a b 
+Les etats : 0 2 1 
+Les etats initiaux : 0 2 
+Les etats finaux : 2 1 
+7 transitions :
+0 a [1]
+0 b [1, 2]
+2 a [0, 1]
+1 b [0, 2]
+
+L'automate n'est pas asynchrone
+
+Non deterministe car plus d'une entree
+L'automate n'est pas asynchrone
+
+Non deterministe car plus d'une entree
+
+Automate determinisé
+L'alphabet : a b 
+Les etats : 0.2 1.2 0.1 1.2.0 0.2.1 1.0 1 
+Les etats initiaux : 0.2 
+Les etats finaux : 0.2 1.2 0.1 1.2.0 0.2.1 1.0 1 
+13 transitions :
+0.2 a [1.0]
+0.2 b [1.2]
+1.2 a [0.1]
+1.2 b [0.2]
+0.1 a [1]
+0.1 b [1.2.0]
+1.2.0 a [0.1]
+1.2.0 b [0.2.1]
+0.2.1 a [1.0]
+0.2.1 b [1.2.0]
+1.0 a [1]
+1.0 b [0.2.1]
+1 b [0.2]
+L'automate n'est pas asynchrone
+
+Automate non complet car 1 n'a pas de transi pour toutes les lettres de l'alphabet
+L'automate n'est pas asynchrone
+
+Automate non complet car 1 n'a pas de transi pour toutes les lettres de l'alphabet
+
+Automate complet : 
+L'alphabet : a b 
+Les etats : 0.2 1.2 0.1 1.2.0 0.2.1 1.0 1 p 
+Les etats initiaux : 0.2 
+Les etats finaux : 0.2 1.2 0.1 1.2.0 0.2.1 1.0 1 
+16 transitions :
+0.2 a [1.0]
+0.2 b [1.2]
+1.2 a [0.1]
+1.2 b [0.2]
+0.1 a [1]
+0.1 b [1.2.0]
+1.2.0 a [0.1]
+1.2.0 b [0.2.1]
+0.2.1 a [1.0]
+0.2.1 b [1.2.0]
+1.0 a [1]
+1.0 b [0.2.1]
+1 a [p]
+1 b [0.2]
+p a [p]
+p b [p]
+Processus de minimisation :
+
+L'automate est deterministe
+L'automate n'est pas asynchrone
+
+Automate complet
+Voici l'automate minimal : 
+L'alphabet : a b 
+Les etats : 0.2.1.2.1.2.0.0.2.1 0.1.1.0 1 p 
+Les etats initiaux : 0.2.1.2.1.2.0.0.2.1 
+Les etats finaux : 0.2.1.2.1.2.0.0.2.1 0.1.1.0 1 
+8 transitions :
+0.2.1.2.1.2.0.0.2.1 a [0.1.1.0]
+0.2.1.2.1.2.0.0.2.1 b [0.2.1.2.1.2.0.0.2.1]
+0.1.1.0 a [1]
+0.1.1.0 b [0.2.1.2.1.2.0.0.2.1]
+1 a [p]
+1 b [0.2.1.2.1.2.0.0.2.1]
+p a [p]
+p b [p]
+
+Reconaissance du mot ab: 
+Mot non reconnu
+
+L'automate est deterministe
+Automate complementaire cree
+Automate complementaire
+L'alphabet : a b 
+Les etats : 0.2.1.2.1.2.0.0.2.1 0.1.1.0 1 p 
+Les etats initiaux : 0.2.1.2.1.2.0.0.2.1 
+Les etats finaux : p 
+8 transitions :
+0.2.1.2.1.2.0.0.2.1 a [0.1.1.0]
+0.2.1.2.1.2.0.0.2.1 b [0.2.1.2.1.2.0.0.2.1]
+0.1.1.0 a [1]
+0.1.1.0 b [0.2.1.2.1.2.0.0.2.1]
+1 a [p]
+1 b [0.2.1.2.1.2.0.0.2.1]
+p a [p]
+p b [p]
+
+Reconaissance du mot ab: 
+Mot non reconnu

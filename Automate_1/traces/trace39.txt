@@ -1,0 +1,123 @@
+Le programme se deroule selon le plan :
+affichage, test presence epsilon, determinisation puis completion, minimisation, 
+reconaissance de mots, complementarisation, reconaissance de mots
+Veuillez ecrire le numero de l'automate :
+(un chiffre de 1 a 44) 
+
+Automate choisi : 
+L'alphabet : a b 
+Les etats : 0 1 3 2 
+Les etats initiaux : 0 1 3 
+Les etats finaux : 1 
+8 transitions :
+0 a [1]
+0 b [2]
+1 a [1]
+1 b [2]
+3 a [2, 1]
+2 a [0]
+2 b [1]
+
+L'automate n'est pas asynchrone
+
+Non deterministe car plus d'une entree
+L'automate n'est pas asynchrone
+
+Non deterministe car plus d'une entree
+
+Automate determinisé
+L'alphabet : a b 
+Les etats : 0.1.3 2 1 0 1.2 2.1 0.1 1.0 
+Les etats initiaux : 0.1.3 
+Les etats finaux : 0.1.3 1 1.2 2.1 0.1 1.0 
+16 transitions :
+0.1.3 a [1.2]
+0.1.3 b [2]
+2 a [0]
+2 b [1]
+1 a [1]
+1 b [2]
+0 a [1]
+0 b [2]
+1.2 a [1.0]
+1.2 b [2.1]
+2.1 a [0.1]
+2.1 b [1.2]
+0.1 a [1]
+0.1 b [2]
+1.0 a [1]
+1.0 b [2]
+L'automate n'est pas asynchrone
+
+Automate complet
+Automate déjà complet
+
+Automate complet : 
+L'alphabet : a b 
+Les etats : 0.1.3 2 1 0 1.2 2.1 0.1 1.0 
+Les etats initiaux : 0.1.3 
+Les etats finaux : 0.1.3 1 1.2 2.1 0.1 1.0 
+16 transitions :
+0.1.3 a [1.2]
+0.1.3 b [2]
+2 a [0]
+2 b [1]
+1 a [1]
+1 b [2]
+0 a [1]
+0 b [2]
+1.2 a [1.0]
+1.2 b [2.1]
+2.1 a [0.1]
+2.1 b [1.2]
+0.1 a [1]
+0.1 b [2]
+1.0 a [1]
+1.0 b [2]
+Processus de minimisation :
+
+L'automate est deterministe
+L'automate n'est pas asynchrone
+
+Automate complet
+Voici l'automate minimal : 
+L'alphabet : a b 
+Les etats : 0.1.3 2 1.0.1.1.0 0 1.2.2.1 
+Les etats initiaux : 0.1.3 
+Les etats finaux : 0.1.3 1.0.1.1.0 1.2.2.1 
+10 transitions :
+0.1.3 a [1.2.2.1]
+0.1.3 b [2]
+2 a [0]
+2 b [1.0.1.1.0]
+1.0.1.1.0 a [1.0.1.1.0]
+1.0.1.1.0 b [2]
+0 a [1.0.1.1.0]
+0 b [2]
+1.2.2.1 a [1.0.1.1.0]
+1.2.2.1 b [1.2.2.1]
+
+Reconaissance du mot ab: 
+Mot reconnu
+
+L'automate est deterministe
+Automate complementaire cree
+Automate complementaire
+L'alphabet : a b 
+Les etats : 0.1.3 2 1.0.1.1.0 0 1.2.2.1 
+Les etats initiaux : 0.1.3 
+Les etats finaux : 2 0 
+10 transitions :
+0.1.3 a [1.2.2.1]
+0.1.3 b [2]
+2 a [0]
+2 b [1.0.1.1.0]
+1.0.1.1.0 a [1.0.1.1.0]
+1.0.1.1.0 b [2]
+0 a [1.0.1.1.0]
+0 b [2]
+1.2.2.1 a [1.0.1.1.0]
+1.2.2.1 b [1.2.2.1]
+
+Reconaissance du mot ab: 
+Mot reconnu

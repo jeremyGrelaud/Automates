@@ -1,0 +1,172 @@
+Le programme se deroule selon le plan :
+affichage, test presence epsilon, determinisation puis completion, minimisation, 
+reconaissance de mots, complementarisation, reconaissance de mots
+Veuillez ecrire le numero de l'automate :
+(un chiffre de 1 a 44) 
+
+Automate choisi : 
+L'alphabet : a b c d 
+Les etats : 1 2 3 4 5 0 
+Les etats initiaux : 1 2 3 4 
+Les etats finaux : 5 
+12 transitions :
+1 a [1, 2]
+2 b [2, 3]
+3 c [3, 4]
+4 d [4, 5]
+5 a [0]
+5 b [0]
+5 c [0]
+5 d [0]
+
+L'automate n'est pas asynchrone
+
+Non deterministe car plus d'une entree
+L'automate n'est pas asynchrone
+
+Non deterministe car plus d'une entree
+
+Automate determinisé
+L'alphabet : a b c d 
+Les etats : 1.2.3.4 4.5 4.5.0 0 3.4 2.3 1.2 
+Les etats initiaux : 1.2.3.4 
+Les etats finaux : 4.5 4.5.0 
+18 transitions :
+1.2.3.4 a [1.2]
+1.2.3.4 b [2.3]
+1.2.3.4 c [3.4]
+1.2.3.4 d [4.5]
+4.5 a [0]
+4.5 b [0]
+4.5 c [0]
+4.5 d [4.5.0]
+4.5.0 a [0]
+4.5.0 b [0]
+4.5.0 c [0]
+4.5.0 d [4.5.0]
+3.4 d [4.5]
+3.4 c [3.4]
+2.3 b [2.3]
+2.3 c [3.4]
+1.2 a [1.2]
+1.2 b [2.3]
+L'automate n'est pas asynchrone
+
+Automate non complet car 0 n'a pas de transi pour toutes les lettres de l'alphabet
+L'automate n'est pas asynchrone
+
+Automate non complet car 0 n'a pas de transi pour toutes les lettres de l'alphabet
+
+Automate complet : 
+L'alphabet : a b c d 
+Les etats : 1.2.3.4 4.5 4.5.0 0 3.4 2.3 1.2 p 
+Les etats initiaux : 1.2.3.4 
+Les etats finaux : 4.5 4.5.0 
+32 transitions :
+1.2.3.4 a [1.2]
+1.2.3.4 b [2.3]
+1.2.3.4 c [3.4]
+1.2.3.4 d [4.5]
+4.5 a [0]
+4.5 b [0]
+4.5 c [0]
+4.5 d [4.5.0]
+4.5.0 a [0]
+4.5.0 b [0]
+4.5.0 c [0]
+4.5.0 d [4.5.0]
+0 a [p]
+0 b [p]
+0 c [p]
+0 d [p]
+3.4 a [p]
+3.4 b [p]
+3.4 c [3.4]
+3.4 d [4.5]
+2.3 a [p]
+2.3 b [2.3]
+2.3 c [3.4]
+2.3 d [p]
+1.2 a [1.2]
+1.2 b [2.3]
+1.2 c [p]
+1.2 d [p]
+p a [p]
+p b [p]
+p c [p]
+p d [p]
+Processus de minimisation :
+
+L'automate est deterministe
+L'automate n'est pas asynchrone
+
+Automate complet
+Voici l'automate minimal : 
+L'alphabet : a b c d 
+Les etats : 1.2.3.4 4.5.4.5.0 0.p 3.4 2.3 1.2 
+Les etats initiaux : 1.2.3.4 
+Les etats finaux : 4.5.4.5.0 
+24 transitions :
+1.2.3.4 a [1.2]
+1.2.3.4 b [2.3]
+1.2.3.4 c [3.4]
+1.2.3.4 d [4.5.4.5.0]
+4.5.4.5.0 a [0.p]
+4.5.4.5.0 b [0.p]
+4.5.4.5.0 c [0.p]
+4.5.4.5.0 d [4.5.4.5.0]
+0.p a [0.p]
+0.p b [0.p]
+0.p c [0.p]
+0.p d [0.p]
+3.4 a [0.p]
+3.4 b [0.p]
+3.4 c [3.4]
+3.4 d [4.5.4.5.0]
+2.3 a [0.p]
+2.3 b [2.3]
+2.3 c [3.4]
+2.3 d [0.p]
+1.2 a [1.2]
+1.2 b [2.3]
+1.2 c [0.p]
+1.2 d [0.p]
+
+Reconaissance du mot ab: 
+Mot non reconnu
+
+L'automate est deterministe
+Automate complementaire cree
+Automate complementaire
+L'alphabet : a b c d 
+Les etats : 1.2.3.4 4.5.4.5.0 0.p 3.4 2.3 1.2 
+Les etats initiaux : 1.2.3.4 
+Les etats finaux : 1.2.3.4 0.p 3.4 2.3 1.2 
+24 transitions :
+1.2.3.4 a [1.2]
+1.2.3.4 b [2.3]
+1.2.3.4 c [3.4]
+1.2.3.4 d [4.5.4.5.0]
+4.5.4.5.0 a [0.p]
+4.5.4.5.0 b [0.p]
+4.5.4.5.0 c [0.p]
+4.5.4.5.0 d [4.5.4.5.0]
+0.p a [0.p]
+0.p b [0.p]
+0.p c [0.p]
+0.p d [0.p]
+3.4 a [0.p]
+3.4 b [0.p]
+3.4 c [3.4]
+3.4 d [4.5.4.5.0]
+2.3 a [0.p]
+2.3 b [2.3]
+2.3 c [3.4]
+2.3 d [0.p]
+1.2 a [1.2]
+1.2 b [2.3]
+1.2 c [0.p]
+1.2 d [0.p]
+
+Reconaissance du mot ab: 
+Mot non reconnu

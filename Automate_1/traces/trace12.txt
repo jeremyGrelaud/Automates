@@ -1,0 +1,108 @@
+Le programme se deroule selon le plan :
+affichage, test presence epsilon, determinisation puis completion, minimisation, 
+reconaissance de mots, complementarisation, reconaissance de mots
+Veuillez ecrire le numero de l'automate :
+(un chiffre de 1 a 44) 
+
+Automate choisi : 
+L'alphabet : a c b d 
+Les etats : 1 0 
+Les etats initiaux : 1 
+Les etats finaux : 0 
+4 transitions :
+1 a [1]
+1 c [0]
+0 b [0]
+0 d [1]
+
+L'automate n'est pas asynchrone
+
+L'automate est deterministe
+Automate déjà déterministe
+
+Automate determinisé
+L'alphabet : a c b d 
+Les etats : 1 0 
+Les etats initiaux : 1 
+Les etats finaux : 0 
+4 transitions :
+1 a [1]
+1 c [0]
+0 b [0]
+0 d [1]
+L'automate n'est pas asynchrone
+
+Automate non complet car 1 n'a pas de transi pour toutes les lettres de l'alphabet
+L'automate n'est pas asynchrone
+
+Automate non complet car 1 n'a pas de transi pour toutes les lettres de l'alphabet
+
+Automate complet : 
+L'alphabet : a c b d 
+Les etats : 1 0 p 
+Les etats initiaux : 1 
+Les etats finaux : 0 
+12 transitions :
+1 a [1]
+1 b [p]
+1 c [0]
+1 d [p]
+0 a [p]
+0 b [0]
+0 c [p]
+0 d [1]
+p a [p]
+p b [p]
+p c [p]
+p d [p]
+Processus de minimisation :
+
+L'automate est deterministe
+L'automate n'est pas asynchrone
+
+Automate complet
+Voici l'automate minimal : 
+L'alphabet : a c b d 
+Les etats : 1 0 p 
+Les etats initiaux : 1 
+Les etats finaux : 0 
+12 transitions :
+1 a [1]
+1 b [p]
+1 c [0]
+1 d [p]
+0 a [p]
+0 b [0]
+0 c [p]
+0 d [1]
+p a [p]
+p b [p]
+p c [p]
+p d [p]
+
+Reconaissance du mot ab: 
+Mot non reconnu
+
+L'automate est deterministe
+Automate complementaire cree
+Automate complementaire
+L'alphabet : a c b d 
+Les etats : 1 0 p 
+Les etats initiaux : 1 
+Les etats finaux : 1 p 
+12 transitions :
+1 a [1]
+1 b [p]
+1 c [0]
+1 d [p]
+0 a [p]
+0 b [0]
+0 c [p]
+0 d [1]
+p a [p]
+p b [p]
+p c [p]
+p d [p]
+
+Reconaissance du mot ab: 
+Mot non reconnu

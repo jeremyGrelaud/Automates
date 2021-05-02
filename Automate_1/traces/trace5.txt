@@ -1,0 +1,98 @@
+Le programme se deroule selon le plan :
+affichage, test presence epsilon, determinisation puis completion, minimisation, 
+reconaissance de mots, complementarisation, reconaissance de mots
+Veuillez ecrire le numero de l'automate :
+(un chiffre de 1 a 44) 
+
+Automate choisi : 
+L'alphabet : a b 
+Les etats : 1 3 2 4 0 
+Les etats initiaux : 1 3 
+Les etats finaux : 2 4 
+6 transitions :
+1 a [2]
+1 b [0]
+3 a [0]
+3 b [4]
+0 a [0]
+0 b [0]
+
+L'automate n'est pas asynchrone
+
+Non deterministe car plus d'une entree
+L'automate n'est pas asynchrone
+
+Non deterministe car plus d'une entree
+
+Automate determinisé
+L'alphabet : a b 
+Les etats : 1.3 0.4 0 2.0 
+Les etats initiaux : 1.3 
+Les etats finaux : 0.4 2.0 
+8 transitions :
+1.3 a [2.0]
+1.3 b [0.4]
+0.4 a [0]
+0.4 b [0]
+0 a [0]
+0 b [0]
+2.0 a [0]
+2.0 b [0]
+L'automate n'est pas asynchrone
+
+Automate complet
+Automate déjà complet
+
+Automate complet : 
+L'alphabet : a b 
+Les etats : 1.3 0.4 0 2.0 
+Les etats initiaux : 1.3 
+Les etats finaux : 0.4 2.0 
+8 transitions :
+1.3 a [2.0]
+1.3 b [0.4]
+0.4 a [0]
+0.4 b [0]
+0 a [0]
+0 b [0]
+2.0 a [0]
+2.0 b [0]
+Processus de minimisation :
+
+L'automate est deterministe
+L'automate n'est pas asynchrone
+
+Automate complet
+Voici l'automate minimal : 
+L'alphabet : a b 
+Les etats : 1.3 0.4.2.0 0 
+Les etats initiaux : 1.3 
+Les etats finaux : 0.4.2.0 
+6 transitions :
+1.3 a [0.4.2.0]
+1.3 b [0.4.2.0]
+0.4.2.0 a [0]
+0.4.2.0 b [0]
+0 a [0]
+0 b [0]
+
+Reconaissance du mot ab: 
+Mot non reconnu
+
+L'automate est deterministe
+Automate complementaire cree
+Automate complementaire
+L'alphabet : a b 
+Les etats : 1.3 0.4.2.0 0 
+Les etats initiaux : 1.3 
+Les etats finaux : 1.3 0 
+6 transitions :
+1.3 a [0.4.2.0]
+1.3 b [0.4.2.0]
+0.4.2.0 a [0]
+0.4.2.0 b [0]
+0 a [0]
+0 b [0]
+
+Reconaissance du mot ab: 
+Mot non reconnu

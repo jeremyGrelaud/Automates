@@ -1,0 +1,150 @@
+Le programme se deroule selon le plan :
+affichage, test presence epsilon, determinisation puis completion, minimisation, 
+reconaissance de mots, complementarisation, reconaissance de mots
+Veuillez ecrire le numero de l'automate :
+(un chiffre de 1 a 44) 
+
+Automate choisi : 
+L'alphabet : a b 
+Les etats : 0 6 1 4 2 3 5 
+Les etats initiaux : 0 
+Les etats finaux : 6 
+10 transitions :
+0 * [1, 4]
+1 * [2]
+1 a [2]
+4 b [5]
+2 b [3]
+3 * [2, 6]
+5 * [4, 6]
+
+
+L'automate est asynchrone car :
+
+0 - * - [1, 4]
+
+L'automate est asynchrone car :
+
+1 - * - [2]
+
+L'automate est asynchrone car :
+
+3 - * - [2, 6]
+
+L'automate est asynchrone car :
+
+5 - * - [4, 6]
+
+Non deterministe car on a la transi : 0--[1, 4]
+
+L'automate est asynchrone car :
+
+0 - * - [1, 4]
+
+L'automate est asynchrone car :
+
+1 - * - [2]
+
+L'automate est asynchrone car :
+
+3 - * - [2, 6]
+
+L'automate est asynchrone car :
+
+5 - * - [4, 6]
+
+L'automate est asynchrone car :
+
+0 - * - [1, 4]
+
+L'automate est asynchrone car :
+
+1 - * - [2]
+
+L'automate est asynchrone car :
+
+3 - * - [2, 6]
+
+L'automate est asynchrone car :
+
+5 - * - [4, 6]
+
+Non deterministe car on a la transi : 0-b-[5, 3]
+
+Automate determinisé
+L'alphabet : a b 
+Les etats : 0 5.3 2 3 
+Les etats initiaux : 0 
+Les etats finaux : 5.3 3 
+5 transitions :
+0 a [2]
+0 b [5.3]
+5.3 b [5.3]
+2 b [3]
+3 b [3]
+L'automate n'est pas asynchrone
+
+Automate non complet car 5.3 n'a pas de transi pour toutes les lettres de l'alphabet
+L'automate n'est pas asynchrone
+
+Automate non complet car 5.3 n'a pas de transi pour toutes les lettres de l'alphabet
+
+Automate complet : 
+L'alphabet : a b 
+Les etats : 0 5.3 2 3 p 
+Les etats initiaux : 0 
+Les etats finaux : 5.3 3 
+10 transitions :
+0 a [2]
+0 b [5.3]
+5.3 a [p]
+5.3 b [5.3]
+2 a [p]
+2 b [3]
+3 a [p]
+3 b [3]
+p a [p]
+p b [p]
+Processus de minimisation :
+
+L'automate est deterministe
+L'automate n'est pas asynchrone
+
+Automate complet
+Voici l'automate minimal : 
+L'alphabet : a b 
+Les etats : 0 5.3.3 2 p 
+Les etats initiaux : 0 
+Les etats finaux : 5.3.3 
+8 transitions :
+0 a [2]
+0 b [5.3.3]
+5.3.3 a [p]
+5.3.3 b [5.3.3]
+2 a [p]
+2 b [5.3.3]
+p a [p]
+p b [p]
+
+Reconaissance du mot ab: 
+Mot reconnu
+
+L'automate est deterministe
+Automate complementaire cree
+Automate complementaire
+L'alphabet : a b 
+Les etats : 0 5.3.3 2 p 
+Les etats initiaux : 0 
+Les etats finaux : 0 2 p 
+8 transitions :
+0 a [2]
+0 b [5.3.3]
+5.3.3 a [p]
+5.3.3 b [5.3.3]
+2 a [p]
+2 b [5.3.3]
+p a [p]
+p b [p]
+
+Reconaissance du mot ab: 
+Mot reconnu

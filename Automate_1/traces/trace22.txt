@@ -1,0 +1,136 @@
+Le programme se deroule selon le plan :
+affichage, test presence epsilon, determinisation puis completion, minimisation, 
+reconaissance de mots, complementarisation, reconaissance de mots
+Veuillez ecrire le numero de l'automate :
+(un chiffre de 1 a 44) 
+
+Automate choisi : 
+L'alphabet : a b c d 
+Les etats : 1 2 3 0 
+Les etats initiaux : 1 
+Les etats finaux : 1 
+6 transitions :
+1 a [2, 3, 0]
+2 b [3]
+3 c [0]
+0 d [1]
+
+L'automate n'est pas asynchrone
+
+Non deterministe car on a la transi : 1-a-[2, 3, 0]
+L'automate n'est pas asynchrone
+
+Non deterministe car on a la transi : 1-a-[2, 3, 0]
+
+Automate determinisé
+L'alphabet : a b c d 
+Les etats : 1 2.3.0 0 3 
+Les etats initiaux : 1 
+Les etats finaux : 1 
+6 transitions :
+1 a [2.3.0]
+2.3.0 d [1]
+2.3.0 b [3]
+2.3.0 c [0]
+0 d [1]
+3 c [0]
+L'automate n'est pas asynchrone
+
+Automate non complet car 1 n'a pas de transi pour toutes les lettres de l'alphabet
+L'automate n'est pas asynchrone
+
+Automate non complet car 1 n'a pas de transi pour toutes les lettres de l'alphabet
+
+Automate complet : 
+L'alphabet : a b c d 
+Les etats : 1 2.3.0 0 3 p 
+Les etats initiaux : 1 
+Les etats finaux : 1 
+20 transitions :
+1 a [2.3.0]
+1 b [p]
+1 c [p]
+1 d [p]
+2.3.0 a [p]
+2.3.0 b [3]
+2.3.0 c [0]
+2.3.0 d [1]
+0 a [p]
+0 b [p]
+0 c [p]
+0 d [1]
+3 a [p]
+3 b [p]
+3 c [0]
+3 d [p]
+p a [p]
+p b [p]
+p c [p]
+p d [p]
+Processus de minimisation :
+
+L'automate est deterministe
+L'automate n'est pas asynchrone
+
+Automate complet
+Voici l'automate minimal : 
+L'alphabet : a b c d 
+Les etats : 1 2.3.0 0 3 p 
+Les etats initiaux : 1 
+Les etats finaux : 1 
+20 transitions :
+1 a [2.3.0]
+1 b [p]
+1 c [p]
+1 d [p]
+2.3.0 a [p]
+2.3.0 b [3]
+2.3.0 c [0]
+2.3.0 d [1]
+0 a [p]
+0 b [p]
+0 c [p]
+0 d [1]
+3 a [p]
+3 b [p]
+3 c [0]
+3 d [p]
+p a [p]
+p b [p]
+p c [p]
+p d [p]
+
+Reconaissance du mot ab: 
+Mot non reconnu
+
+L'automate est deterministe
+Automate complementaire cree
+Automate complementaire
+L'alphabet : a b c d 
+Les etats : 1 2.3.0 0 3 p 
+Les etats initiaux : 1 
+Les etats finaux : 2.3.0 0 3 p 
+20 transitions :
+1 a [2.3.0]
+1 b [p]
+1 c [p]
+1 d [p]
+2.3.0 a [p]
+2.3.0 b [3]
+2.3.0 c [0]
+2.3.0 d [1]
+0 a [p]
+0 b [p]
+0 c [p]
+0 d [1]
+3 a [p]
+3 b [p]
+3 c [0]
+3 d [p]
+p a [p]
+p b [p]
+p c [p]
+p d [p]
+
+Reconaissance du mot ab: 
+Mot non reconnu

@@ -1,0 +1,175 @@
+Le programme se deroule selon le plan :
+affichage, test presence epsilon, determinisation puis completion, minimisation, 
+reconaissance de mots, complementarisation, reconaissance de mots
+Veuillez ecrire le numero de l'automate :
+(un chiffre de 1 a 44) 
+
+Automate choisi : 
+L'alphabet : a b 
+Les etats : 0 10 1 4 2 3 5 8 6 7 9 
+Les etats initiaux : 0 
+Les etats finaux : 10 
+12 transitions :
+0 * [1, 4]
+1 a [2]
+4 * [5, 8]
+2 b [3]
+3 * [10]
+5 a [6]
+8 a [9]
+6 b [7]
+7 * [5, 8]
+9 * [10]
+
+
+L'automate est asynchrone car :
+
+0 - * - [1, 4]
+
+L'automate est asynchrone car :
+
+4 - * - [5, 8]
+
+L'automate est asynchrone car :
+
+3 - * - [10]
+
+L'automate est asynchrone car :
+
+7 - * - [5, 8]
+
+L'automate est asynchrone car :
+
+9 - * - [10]
+
+Non deterministe car on a la transi : 0--[1, 4]
+
+L'automate est asynchrone car :
+
+0 - * - [1, 4]
+
+L'automate est asynchrone car :
+
+4 - * - [5, 8]
+
+L'automate est asynchrone car :
+
+3 - * - [10]
+
+L'automate est asynchrone car :
+
+7 - * - [5, 8]
+
+L'automate est asynchrone car :
+
+9 - * - [10]
+
+L'automate est asynchrone car :
+
+0 - * - [1, 4]
+
+L'automate est asynchrone car :
+
+4 - * - [5, 8]
+
+L'automate est asynchrone car :
+
+3 - * - [10]
+
+L'automate est asynchrone car :
+
+7 - * - [5, 8]
+
+L'automate est asynchrone car :
+
+9 - * - [10]
+
+Non deterministe car on a la transi : 0-a-[2, 6, 9]
+
+Automate determinisé
+L'alphabet : a b 
+Les etats : 0 2.6.9 3.7 6.9 7 
+Les etats initiaux : 0 
+Les etats finaux : 2.6.9 3.7 6.9 
+5 transitions :
+0 a [2.6.9]
+2.6.9 b [3.7]
+3.7 a [6.9]
+6.9 b [7]
+7 a [6.9]
+L'automate n'est pas asynchrone
+
+Automate non complet car 0 n'a pas de transi pour toutes les lettres de l'alphabet
+L'automate n'est pas asynchrone
+
+Automate non complet car 0 n'a pas de transi pour toutes les lettres de l'alphabet
+
+Automate complet : 
+L'alphabet : a b 
+Les etats : 0 2.6.9 3.7 6.9 7 p 
+Les etats initiaux : 0 
+Les etats finaux : 2.6.9 3.7 6.9 
+12 transitions :
+0 a [2.6.9]
+0 b [p]
+2.6.9 a [p]
+2.6.9 b [3.7]
+3.7 a [6.9]
+3.7 b [p]
+6.9 a [p]
+6.9 b [7]
+7 a [6.9]
+7 b [p]
+p a [p]
+p b [p]
+Processus de minimisation :
+
+L'automate est deterministe
+L'automate n'est pas asynchrone
+
+Automate complet
+Voici l'automate minimal : 
+L'alphabet : a b 
+Les etats : 0 2.6.9 3.7 6.9 7 p 
+Les etats initiaux : 0 
+Les etats finaux : 2.6.9 3.7 6.9 
+12 transitions :
+0 a [2.6.9]
+0 b [p]
+2.6.9 a [p]
+2.6.9 b [3.7]
+3.7 a [6.9]
+3.7 b [p]
+6.9 a [p]
+6.9 b [7]
+7 a [6.9]
+7 b [p]
+p a [p]
+p b [p]
+
+Reconaissance du mot ab: 
+Mot reconnu
+
+L'automate est deterministe
+Automate complementaire cree
+Automate complementaire
+L'alphabet : a b 
+Les etats : 0 2.6.9 3.7 6.9 7 p 
+Les etats initiaux : 0 
+Les etats finaux : 0 7 p 
+12 transitions :
+0 a [2.6.9]
+0 b [p]
+2.6.9 a [p]
+2.6.9 b [3.7]
+3.7 a [6.9]
+3.7 b [p]
+6.9 a [p]
+6.9 b [7]
+7 a [6.9]
+7 b [p]
+p a [p]
+p b [p]
+
+Reconaissance du mot ab: 
+Mot reconnu

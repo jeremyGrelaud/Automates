@@ -90,6 +90,9 @@ Reconaissance du mot ab:
 Mot non reconnu
 
 L'automate est deterministe
+L'automate n'est pas asynchrone
+
+Automate complet
 Automate complementaire cree
 Automate complementaire
 L'alphabet : a b 
@@ -111,4 +114,4 @@ p a [p]
 p b [p]
 
 Reconaissance du mot ab: 
-Mot non reconnu
+Mot reconnu

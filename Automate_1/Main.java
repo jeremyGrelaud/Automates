@@ -1,120 +1,3 @@
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-package Automate_1;
-
-import java.io.FileNotFoundException;
-import java.util.List;
-
-public class Main {
-	
-	public static void main(String[] args) throws FileNotFoundException {
-		
-		//Automate automate = FileReader.createAutomateObject("D:/Efrei/L2/java/workspace/Automate/src/Automate_1/B10-8.txt");
-		Automate automate = FileReader.createAutomateObject("D:/Efrei/L2/java/workspace/Automate/src/Automate_1/B10-1.txt");
-		//Automate automate = FileReader.createAutomateObject("D:/Efrei/L2/java/workspace/Automate/src/Automate_1/B10-2.txt");
-		
-		//automate.afficher_automate(automate);    
-		
-		//automate.standardisation(automate);
-		
-		//automate.afficher_automate(automate);   
-		
-		//automate.est_un_automate_asynchrone(automate);
-		
-		//automate.est_un_automate_deterministe(automate);
-		
-		//automate.est_un_automate_complet(automate);
-		
-		//automate.completion(automate);
-		
-		//System.out.println("");
-		//automate.afficher_automate(automate);
-		
-		//automate.automate_complementaire(automate);
-		//automate.afficher_automate(automate);
-		
-		//System.out.println(automate.reconnaitre("aa", automate));
-		
-		/*
-		System.out.println("determinisation");
-		Automate deter = automate.determinisation_et_completion_synchrone(automate);
-		deter.afficher_automate(deter);
-		*/
-		
-		System.out.println(automate.reconnaitre_mot_automate_determinsite("aba"));
-		//automate.afficher_automate(automate);
-
-	}
-	
-
-}
-
-
-=======
-package Automate_1;
-
-import java.io.FileNotFoundException;
-
-public class Main {
-	
-	public static void main(String[] args) throws FileNotFoundException {
-		
-		
-		//Automate automate = FileReader.createAutomateObject("D:/Efrei/L2/java/workspace/Automate/src/Automate_1/B10-8.txt");
-		//Automate automate = FileReader.createAutomateObject("D:/Efrei/L2/java/workspace/Automate/src/Automate_1/B10-1.txt");
-		Automate automate = FileReader.createAutomateObject("D:/Efrei/L2/java/workspace/Automate/src/Automate_1/B10-2.txt");
-		//Automate automate = FileReader.createAutomateObject("D:/Efrei/L2/java/workspace/Automate/src/Automate_1/B10-3.txt");
-		
-		Automate determinise = FileReader.createAutomateObject("D:/Efrei/L2/java/workspace/Automate/src/Automate_1/B10-1.txt");
-		
-		//Automate copie = new Automate(automate);
-		
-		automate.afficher_automate();
-		/*marche pas encore*/
-		automate.determinisation(automate);
-		automate.afficher_automate();
-		
-		
-		
-		//System.out.println(automate.est_standard());
-		
-		//automate.standardisation(); 
-		
-		//automate.afficher_automate();   
-		
-		//automate.est_un_automate_asynchrone();
-		
-		//automate.est_un_automate_deterministe();
-		
-		//automate.est_un_automate_complet();
-		
-		//copie = copie.completion(); 
-		
-		//System.out.println("");
-		//copie.afficher_automate();
-		
-			
-		//automate.automate_complementaire(automate);
-		//automate.afficher_automate();
-		
-		//System.out.println(automate.reconnaitre("aa", automate));
-		
-		/*
-		System.out.println("determinisation");
-		Automate deter = automate.determinisation_et_completion_synchrone(automate);
-		deter.afficher_automate(deter);
-		*/
-		
-		//System.out.println(automate.reconnaitre_mot_automate_determinsite("aba"));
-		
-		//automate.afficher_automate();
-
-	}
-	
-
-}
->>>>>>> Stashed changes
-=======
 package Automate_1;
 
 import java.io.File;
@@ -127,22 +10,18 @@ public class Main {
 	
 	public static void main(String[] args) throws FileNotFoundException {
 
-		/*
-		String path = getChemin("B10-10");
 		
-		Automate automate = FileReader.createAutomateObject(path);*/
-	
+		//portion de code permettant de generer les traces en tapant le numero de l automate
 		
-		try { // Ajoute un try + catch
+		try { // Ajout d'un try  catch
 
             PrintStream console = System.out; // Ajoute ça 
 
-            PrintStream fileOut = new PrintStream("src/Automate_1/traces/trace14.txt"); // Et ça
+            PrintStream fileOut = new PrintStream("src/Automate_1/traces/trace44.txt"); // Et ça
 
             System.setOut(fileOut); // Et ça
 
-            // TON CODE 
-            //Execution();
+            //CODE 
             Trace();
 
             System.setOut(console); // Et ça à la fin
@@ -152,37 +31,14 @@ public class Main {
         }
 		
 		
-		//Automate automate = choisirAutomate();
-		//Automate copie = new Automate(automate);
+		//Execution();
 		
-		
-		//copie.completion();
-		//copie.standardisation();
-		//copie.est_un_automate_complet();
-		//System.out.println("");
-		//copie.afficher_automate(); 
-		
-		
-		/*
-		copie = copie.elimination_epsilon();
-		copie.afficher_automate();	
-		copie =  copie.determinise();
-		copie.completion();
-		copie.afficher_automate();*/
-		
-		//copie = copie.minimisation();
-		//copie.afficher_automate();
-		
-		//copie.programme();
 		
 
 	}
 
 		//renvoi le path de l'automate choisi en entrant son nom
 		private static String getChemin(String automate_choisi) {
-		
-			
-			
 		
 		File root = null;
 		
@@ -348,4 +204,3 @@ public class Main {
 	
 
 }
->>>>>>> Stashed changes

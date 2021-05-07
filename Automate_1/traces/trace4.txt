@@ -52,12 +52,12 @@ Les etats : 0.1.p
 Les etats initiaux : 0.1.p 
 Les etats finaux : 
 1 transitions :
-0.1.p a [0.1.p, 0.1.p]
+0.1.p a [0.1.p]
 
 Reconaissance du mot ab: 
 Mot non reconnu
 
-Non deterministe car on a la transi : 0.1.p-a-[0.1.p, 0.1.p]
+L'automate est deterministe
 L'automate n'est pas asynchrone
 
 Automate complet
@@ -68,7 +68,7 @@ Les etats : 0.1.p
 Les etats initiaux : 0.1.p 
 Les etats finaux : 0.1.p 
 1 transitions :
-0.1.p a [0.1.p, 0.1.p]
+0.1.p a [0.1.p]
 
 Reconaissance du mot ab: 
 Mot non reconnu

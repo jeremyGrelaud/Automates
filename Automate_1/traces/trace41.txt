@@ -94,6 +94,9 @@ Reconaissance du mot ab:
 Mot reconnu
 
 L'automate est deterministe
+L'automate n'est pas asynchrone
+
+Automate complet
 Automate complementaire cree
 Automate complementaire
 L'alphabet : a b 
@@ -111,4 +114,4 @@ Les etats finaux : 0 5
 5 b [5]
 
 Reconaissance du mot ab: 
-Mot reconnu
+Mot non reconnu

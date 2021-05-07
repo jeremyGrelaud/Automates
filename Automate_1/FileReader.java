@@ -45,8 +45,7 @@ public class FileReader {
 				break;
 			default: // Les lignes suivantes sont toutes des transitions de la forme 1a2 : etat_depart lettre_alphabet etat_arrivee
 				String[] word = content.split("[0-9!-@]"); //Si on a '01*9', ça retourne '*' donc la lettre de l'alphabet
-				
-				//System.out.println(Arrays.toString(word));
+			
 				//en fait pour la transition epsilon elle est représentée par le vide  ""
 				
 				values = content.split("[a-zA-Z*]"); // Pour '01*9', ça retourne '01', '9' donc les noms des etats
@@ -69,9 +68,6 @@ public class FileReader {
 				
 				String transitionWord = String.join("", word);
 				state.addTransi(transitionWord, next);
-				/*
-				System.out.println(state);
-				System.out.println(transitionWord);*/
 
 				// quand on trouve des lettres n'etant pas encore dans l'alphabet on les ajoute
 				if (!alphabet.getDictionary().contains(transitionWord) && !transitionWord.equals("")) {  //"" la transi epsilon
@@ -91,8 +87,8 @@ public class FileReader {
 
 	/**
 	 * Permet de charger l'etat dans l'automate
-	 * @param content un string avec le nbr d'etats et leurs noms
-	 * @param automaton de type Automate dans lequel on va ajouter les nouveaux etats
+	 * @param contient un string avec le nbr d'etats et leurs noms
+	 * @param automate de type Automate dans lequel on va ajouter les nouveaux etats
 	 * @param types d'états : ENTRY, COMMON, EXIT
 	 */
 	private static void loadEtats(String content, Automate automaton, TypeEtat type) {
